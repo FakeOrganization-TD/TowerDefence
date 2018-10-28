@@ -290,6 +290,7 @@ MonoBehaviour:
   cristalPrefab: {fileID: 133746, guid: 35ceaffeabd72e8439b910a3bff39cf3, type: 2}
   destroyedTurretprefab: {fileID: 133746, guid: 9f47b72fd17f0dc468063b61e4cb5029,
     type: 2}
+  pathPrefab: {fileID: 133746, guid: ecf7e965687b7614f97bb69e8463566e, type: 2}
   obstaclePropabilityPercent: 0.15
 --- !u!4 &785495764
 Transform:
