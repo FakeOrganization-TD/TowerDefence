@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Generator : MonoBehaviour
 {
-
-
-
     public GameObject dirtPrefab;
     public GameObject normalTerrainPrefab;
     public GameObject trashBinPrefab;
     public GameObject blackHolePrefab;
+    public GameObject cristalPrefab;
+    public GameObject destroyedTurretprefab;
+
     PerlinNoise noise;
     int _minX = 0;
     int _maxX = 64;
@@ -35,7 +35,15 @@ public class Generator : MonoBehaviour
             {
                 int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
                 //rows (y values)
-                map[i, k] = new Terrain(RandomTerrainType(), columnHeight);
+                var terrainType = RandomTerrainType();
+                if (terrainType == TerrainType.Path)
+                {
+                    map[i, k] = new Terrain(terrainType, 1);
+                }
+                else
+                {
+                    map[i, k] = new Terrain(terrainType, columnHeight);
+                }
             }
         }
         return map;
@@ -64,6 +72,25 @@ public class Generator : MonoBehaviour
                         case TerrainType.BlackHole:
                             {
                                 GameObject block = blackHolePrefab;
+                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                            }
+                            break;
+                        case TerrainType.DestroyedTurret:
+                            {
+                                GameObject block = destroyedTurretprefab;
+                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                            }
+                            break;
+                        case TerrainType.Cristal:
+                            {
+                                GameObject block = cristalPrefab;
+                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                            }
+                            break;
+                        case TerrainType.Path:
+                            {
+                                //TODO zmienić na inny prefab ze ścieżką
+                                GameObject block = normalTerrainPrefab;
                                 Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
                             }
                             break;

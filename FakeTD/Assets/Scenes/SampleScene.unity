@@ -284,7 +284,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dirtPrefab: {fileID: 133746, guid: f46735a4c21ba6144b84b55a1b3bc67d, type: 2}
-  grassPrefab: {fileID: 154310, guid: bf0891f8e8e911440a94ecd050c900a1, type: 2}
+  normalTerrainPrefab: {fileID: 154310, guid: bf0891f8e8e911440a94ecd050c900a1, type: 2}
+  trashBinPrefab: {fileID: 133746, guid: 0c761bb4ab54fcb4b9ea3628fa5f7073, type: 2}
+  blackHolePrefab: {fileID: 133746, guid: ee4e31a700c33a0468622ca4867fa202, type: 2}
+  cristalPrefab: {fileID: 0}
+  destroyedTurretprefab: {fileID: 0}
 --- !u!4 &785495764
 Transform:
   m_ObjectHideFlags: 0
