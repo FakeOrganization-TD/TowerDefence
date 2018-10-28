@@ -2,25 +2,83 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Generator  : MonoBehaviour{
+public class Generator : MonoBehaviour
+{
 
 
 
     public GameObject dirtPrefab;
-    public GameObject grassPrefab;
+    public GameObject normalTerrainPrefab;
+    public GameObject trashBinPrefab;
+    public GameObject blackHolePrefab;
     PerlinNoise noise;
-
-    int minX = 0;
-    int maxX = 64;
-    int minZ = 0;
-    int maxZ = 64;
-    int minY = 0;
-    int maxY = 20;
+    int _minX = 0;
+    int _maxX = 64;
+    int _minZ = 0;
+    int _maxZ = 64;
+    int _minY = 0;
+    int _maxY = 20;
 
     void Start()
     {
         noise = new PerlinNoise(Random.Range(1000000, 10000000));
-        Regenerate();
+        GenerateMapFromMatrix(GenerateMapMatrix());
+        //Regenerate();
+    }
+
+    private Terrain[,] GenerateMapMatrix()
+    {
+        Terrain[,] map = new Terrain[_maxX, _maxZ];
+        for (int i = _minX; i < _maxX; i++)
+        {//columns (x values)
+            for (int k = _minZ; k < _maxZ; k++)
+            {
+                int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
+                //rows (y values)
+                map[i, k] = new Terrain(RandomTerrainType(), columnHeight);
+            }
+        }
+        return map;
+    }
+    private void GenerateMapFromMatrix(Terrain[,] map)
+    {
+        float width = dirtPrefab.transform.lossyScale.x;
+        float height = dirtPrefab.transform.lossyScale.y;
+        float depth = dirtPrefab.transform.lossyScale.z;
+
+        for (int i = _minX; i < _maxX; i++)
+        {//columns (x values)
+            for (int k = _minZ; k < _maxZ; k++)
+            {
+                int columnHeight = map[i, k].Height;
+                for (int j = _minY; j < _minY + columnHeight; j++)
+                {//rows (y values)
+                    switch (map[i, k].TerrainType)
+                    {
+                        case TerrainType.TrashBin:
+                            {
+                                GameObject block = trashBinPrefab;
+                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                            }
+                            break;
+                        case TerrainType.BlackHole:
+                            {
+                                GameObject block = blackHolePrefab;
+                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                            }
+                            break;
+                        default:
+                            {
+                                GameObject block = normalTerrainPrefab;
+                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                            }
+                            break;
+
+                    }
+                   
+                }
+            }
+        }
     }
     private void Regenerate()
     {
@@ -29,17 +87,43 @@ public class Generator  : MonoBehaviour{
         float height = dirtPrefab.transform.lossyScale.y;
         float depth = dirtPrefab.transform.lossyScale.z;
 
-        for (int i = minX; i < maxX; i++)
+        for (int i = _minX; i < _maxX; i++)
         {//columns (x values)
-            for (int k = minZ; k < maxZ; k++)
+            for (int k = _minZ; k < _maxZ; k++)
             {
-                int columnHeight = 2 + noise.GetNoise(i - minX, k - minZ, maxY - minY - 2);
-                for (int j = minY; j < minY + columnHeight; j++)
+                int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
+                for (int j = _minY; j < _minY + columnHeight; j++)
                 {//rows (y values)
-                    GameObject block = (j == minY + columnHeight - 1) ? grassPrefab : dirtPrefab;
+                    GameObject block = (j == _minY + columnHeight - 1) ? normalTerrainPrefab : dirtPrefab;
                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
                 }
             }
+        }
+    }
+
+
+    private TerrainType RandomTerrainType()
+    {
+        var propability = Random.Range(0.0f, 1.0f);
+        if (propability <= 0.1)
+        {
+            return TerrainType.BlackHole;
+        }
+        else if (propability > 0.1 && propability <= 0.2)
+        {
+            return TerrainType.Cristal;
+        }
+        else if (propability > 0.2 && propability <= 0.3)
+        {
+            return TerrainType.DestroyedTurret;
+        }
+        else if (propability > 0.3 && propability <= 0.4)
+        {
+            return TerrainType.TrashBin;
+        }
+        else
+        {
+            return TerrainType.Normal;
         }
     }
 }

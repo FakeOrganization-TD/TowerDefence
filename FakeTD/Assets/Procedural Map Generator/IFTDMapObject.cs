@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Path {
+public interface IFTDMapObject {
 
-}
-public enum Direction
-{
-    Up,Down,Left,Right
 }
