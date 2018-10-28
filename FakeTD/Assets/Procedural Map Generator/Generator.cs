@@ -11,7 +11,7 @@ public class Generator  : MonoBehaviour{
     PerlinNoise noise;
 
     int minX = 0;
-    int maxX = 32;
+    int maxX = 64;
     int minZ = 0;
     int maxZ = 64;
     int minY = 0;
