@@ -287,8 +287,10 @@ MonoBehaviour:
   normalTerrainPrefab: {fileID: 154310, guid: bf0891f8e8e911440a94ecd050c900a1, type: 2}
   trashBinPrefab: {fileID: 133746, guid: 0c761bb4ab54fcb4b9ea3628fa5f7073, type: 2}
   blackHolePrefab: {fileID: 133746, guid: ee4e31a700c33a0468622ca4867fa202, type: 2}
-  cristalPrefab: {fileID: 0}
-  destroyedTurretprefab: {fileID: 0}
+  cristalPrefab: {fileID: 133746, guid: 35ceaffeabd72e8439b910a3bff39cf3, type: 2}
+  destroyedTurretprefab: {fileID: 133746, guid: 9f47b72fd17f0dc468063b61e4cb5029,
+    type: 2}
+  obstaclePropabilityPercent: 0.15
 --- !u!4 &785495764
 Transform:
   m_ObjectHideFlags: 0

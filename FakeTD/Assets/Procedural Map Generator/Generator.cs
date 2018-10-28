@@ -10,6 +10,8 @@ public class Generator : MonoBehaviour
     public GameObject blackHolePrefab;
     public GameObject cristalPrefab;
     public GameObject destroyedTurretprefab;
+    public GameObject pathPrefab;
+    public float obstaclePropabilityPercent;
 
     PerlinNoise noise;
     int _minX = 0;
@@ -17,16 +19,16 @@ public class Generator : MonoBehaviour
     int _minZ = 0;
     int _maxZ = 64;
     int _minY = 0;
-    int _maxY = 20;
+    int _maxY = 15;//Max height of mountains
 
     void Start()
     {
         noise = new PerlinNoise(Random.Range(1000000, 10000000));
-        GenerateMapFromMatrix(GenerateMapMatrix());
+        GenerateMapFromMatrix(GenerateMapMatrix(obstaclePropabilityPercent));
         //Regenerate();
     }
 
-    private Terrain[,] GenerateMapMatrix()
+    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent)
     {
         Terrain[,] map = new Terrain[_maxX, _maxZ];
         for (int i = _minX; i < _maxX; i++)
@@ -34,20 +36,23 @@ public class Generator : MonoBehaviour
             for (int k = _minZ; k < _maxZ; k++)
             {
                 int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
-                //rows (y values)
-                var terrainType = RandomTerrainType();
-                if (terrainType == TerrainType.Path)
-                {
-                    map[i, k] = new Terrain(terrainType, 1);
-                }
-                else
-                {
-                    map[i, k] = new Terrain(terrainType, columnHeight);
-                }
+                var terrainType = RandomTerrainType(obstaclePropabilityPercent);
+                map[i, k] = new Terrain(terrainType, columnHeight);
             }
+        }
+        map = generatePath(map);
+        return map;
+    }
+    private Terrain[,] generatePath(Terrain[,] map)
+    {
+        for (int i = _minZ; i < _maxZ; i++)
+        {
+            map[_maxX / 2, i].Height = 1;
+            map[_maxX / 2, i].TerrainType = TerrainType.Path;
         }
         return map;
     }
+
     private void GenerateMapFromMatrix(Terrain[,] map)
     {
         float width = dirtPrefab.transform.lossyScale.x;
@@ -89,8 +94,7 @@ public class Generator : MonoBehaviour
                             break;
                         case TerrainType.Path:
                             {
-                                //TODO zmienić na inny prefab ze ścieżką
-                                GameObject block = normalTerrainPrefab;
+                                GameObject block = pathPrefab;
                                 Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
                             }
                             break;
@@ -102,7 +106,7 @@ public class Generator : MonoBehaviour
                             break;
 
                     }
-                   
+
                 }
             }
         }
@@ -129,24 +133,27 @@ public class Generator : MonoBehaviour
     }
 
 
-    private TerrainType RandomTerrainType()
+    private TerrainType RandomTerrainType(float obstaclePropabilityPercent)
     {
         var propability = Random.Range(0.0f, 1.0f);
-        if (propability <= 0.1)
+        if (propability <= obstaclePropabilityPercent)
         {
-            return TerrainType.BlackHole;
-        }
-        else if (propability > 0.1 && propability <= 0.2)
-        {
-            return TerrainType.Cristal;
-        }
-        else if (propability > 0.2 && propability <= 0.3)
-        {
-            return TerrainType.DestroyedTurret;
-        }
-        else if (propability > 0.3 && propability <= 0.4)
-        {
-            return TerrainType.TrashBin;
+            if (propability <= obstaclePropabilityPercent / 4)
+            {
+                return TerrainType.BlackHole;
+            }
+            else if (propability <= obstaclePropabilityPercent / 3)
+            {
+                return TerrainType.Cristal;
+            }
+            else if (propability <= obstaclePropabilityPercent / 2)
+            {
+                return TerrainType.DestroyedTurret;
+            }
+            else// (propability > 0.3 && propability <= 0.4)
+            {
+                return TerrainType.TrashBin;
+            }
         }
         else
         {
