@@ -37,7 +37,14 @@ public class Generator : MonoBehaviour
             {
                 int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
                 var terrainType = RandomTerrainType(obstaclePropabilityPercent);
-                map[i, k] = new Terrain(terrainType, columnHeight);
+                if (terrainType != TerrainType.Normal)
+                {
+                    map[i, k] = new Terrain(terrainType, columnHeight + 1);//place for special item
+                }
+                else
+                {
+                    map[i, k] = new Terrain(terrainType, columnHeight);
+                }
             }
         }
         map = generatePath(map);
@@ -66,45 +73,52 @@ public class Generator : MonoBehaviour
                 int columnHeight = map[i, k].Height;
                 for (int j = _minY; j < _minY + columnHeight; j++)
                 {//rows (y values)
-                    switch (map[i, k].TerrainType)
+                    if (j == columnHeight - 1) //item on top
                     {
-                        case TerrainType.TrashBin:
-                            {
-                                GameObject block = trashBinPrefab;
-                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
-                            }
-                            break;
-                        case TerrainType.BlackHole:
-                            {
-                                GameObject block = blackHolePrefab;
-                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
-                            }
-                            break;
-                        case TerrainType.DestroyedTurret:
-                            {
-                                GameObject block = destroyedTurretprefab;
-                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
-                            }
-                            break;
-                        case TerrainType.Cristal:
-                            {
-                                GameObject block = cristalPrefab;
-                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
-                            }
-                            break;
-                        case TerrainType.Path:
-                            {
-                                GameObject block = pathPrefab;
-                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
-                            }
-                            break;
-                        default:
-                            {
-                                GameObject block = normalTerrainPrefab;
-                                Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
-                            }
-                            break;
-
+                        switch (map[i, k].TerrainType)
+                        {
+                            case TerrainType.TrashBin:
+                                {
+                                    GameObject block = trashBinPrefab;
+                                    Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                }
+                                break;
+                            case TerrainType.BlackHole:
+                                {
+                                    GameObject block = blackHolePrefab;
+                                    Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                }
+                                break;
+                            case TerrainType.DestroyedTurret:
+                                {
+                                    GameObject block = destroyedTurretprefab;
+                                    Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                }
+                                break;
+                            case TerrainType.Cristal:
+                                {
+                                    GameObject block = cristalPrefab;
+                                    Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                }
+                                break;
+                            case TerrainType.Path:
+                                {
+                                    GameObject block = pathPrefab;
+                                    Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                }
+                                break;
+                            default:
+                                {
+                                    GameObject block = normalTerrainPrefab;
+                                    Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                }
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        GameObject block = normalTerrainPrefab;
+                        Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
                     }
 
                 }
