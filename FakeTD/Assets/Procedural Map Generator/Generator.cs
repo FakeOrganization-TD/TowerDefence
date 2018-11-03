@@ -19,7 +19,7 @@ public class Generator : MonoBehaviour
     int _minZ = 0;
     int _maxZ = 64;
     int _minY = 0;
-    int _maxY = 5;//Max height of mountains15
+    int _maxY = 15;//Max height of mountains15
 
     void Start()
     {
@@ -31,50 +31,111 @@ public class Generator : MonoBehaviour
     private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent)
     {
         Terrain[,] map = new Terrain[_maxX, _maxZ];
-        for (int i = _minX; i < _maxX; i++)
-        {//columns (x values)
-            for (int k = _minZ; k < _maxZ; k++)
-            {
-                int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
-                var terrainType = RandomTerrainType(obstaclePropabilityPercent);
-                if (terrainType != TerrainType.Normal)
-                {
-                    map[i, k] = new Terrain(terrainType, columnHeight + 1);//place for special item
-                }
-                else
-                {
-                    map[i, k] = new Terrain(terrainType, columnHeight);
-                }
-            }
-        }
-
-        Vector2 start = new Vector2();
-        Vector2 end = new Vector2();
-
-        for (int i =0;i < _maxX; i++)
+        bool needToRegenerate = false;
+        do
         {
-            if (map[i, 0].TerrainType == TerrainType.Normal)
-            {
-                start = new Vector2(i, 0);
-                break;
+            needToRegenerate = false;
+            //Terrain[,] map = new Terrain[_maxX, _maxZ];
+            for (int i = _minX; i < _maxX; i++)
+            {//columns (x values)
+                for (int k = _minZ; k < _maxZ; k++)
+                {
+                    int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
+                    var terrainType = RandomTerrainType(obstaclePropabilityPercent);
+                    if (terrainType != TerrainType.Normal)
+                    {
+                        map[i, k] = new Terrain(terrainType, columnHeight + 1);//place for special item
+                    }
+                    else
+                    {
+                        map[i, k] = new Terrain(terrainType, columnHeight);
+                    }
+                }
             }
+
+            Vector2 start, end;
+            findStartAndEndOfMap(map, out start, out end);
+
+            var pathFinder = new Pathfinder(map, _maxX, _maxZ);
+            try
+            {
+                map = pathFinder.SearchPath(start, end);//generateFakePath(map);//todo podmienić
+                                                        //  map = generateFakePath(map);
                 
-        }
-        for (int i = _maxX-1; i >=0 ; i--)
-        {
-            if (map[i, _maxZ-1].TerrainType == TerrainType.Normal)
-            {
-                end = new Vector2(i, _maxZ-1);
-                break;
             }
+            catch
+            {
+                Debug.Log("Need to regenerate map");
+                needToRegenerate = true;
+            }
+        } while (needToRegenerate);
 
-        }
-
-
-        var pathFinder = new Pathfinder(map, _maxX, _maxZ);
-        map = pathFinder.SearchPath(start, end);//generateFakePath(map);//todo podmienić
         return map;
     }
+
+    private void findStartAndEndOfMap(Terrain[,] map, out Vector2 start, out Vector2 end)
+    {
+        start = new Vector2();
+        end = new Vector2();
+
+        int i = 0;
+
+        bool notFound = true;
+        while (notFound)
+        {
+            if (map[_maxX/2 +i, 0].TerrainType == TerrainType.Normal)
+            {
+                start = new Vector2(_maxX / 2 + i, 0);
+                notFound = false;
+                break;
+            }
+            else if(map[_maxX / 2 - i, 0].TerrainType == TerrainType.Normal)
+            {
+                start = new Vector2(_maxX / 2 - i, 0);
+                notFound = false;
+                break;
+            }
+            i++;
+        }
+        i = 0;
+        notFound = true;
+        while (notFound)
+        {
+            if (map[_maxX / 2 + i, _maxZ - 1].TerrainType == TerrainType.Normal)
+            {
+                end = new Vector2(_maxX / 2 + i, _maxZ - 1);
+                notFound = false;
+                break;
+            }
+            else if (map[_maxX / 2 - i, _maxZ - 1].TerrainType == TerrainType.Normal)
+            {
+                end = new Vector2(_maxX / 2 - i, _maxZ - 1);
+                notFound = false;
+                break;
+            }
+            i++;
+        }
+
+        //for (int i = 0; i < _maxX - 1; i++)
+        //{
+        //    if (map[i, 0].TerrainType == TerrainType.Normal)
+        //    {
+        //        start = new Vector2(i, 0);
+        //        break;
+        //    }
+
+        //}
+        //for (int i = _maxX - 1; i >= 0; i--)
+        //{
+        //    if (map[i, _maxZ - 1].TerrainType == TerrainType.Normal)
+        //    {
+        //        end = new Vector2(i, _maxZ - 1);
+        //        break;
+        //    }
+
+        //}
+    }
+
     private Terrain[,] generateFakePath(Terrain[,] map)
     {
         for (int i = _minZ; i < _maxZ; i++)

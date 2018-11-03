@@ -73,14 +73,14 @@ public class Pathfinder
             canSearch = false;
         }
         #endregion
-
+        bool canFindWay = false;
         //Start the A* algorithm
         if (canSearch)
         {
             //add the starting tile to the open list
             openList.Add(startTile);
             currentTile = new Vector2(-1, -1);
-
+            
             //while Openlist is not empty
             while (openList.Count != 0)
             {
@@ -90,6 +90,7 @@ public class Pathfinder
                 //If the currentTile is the endtile, then we can stop searching
                 if (currentTile.x == endTile.x && currentTile.y == endTile.y)
                 {
+                    canFindWay = true;
                     Debug.Log("YEHA, We found the end tile!!!! :D");
                     break;
                 }
@@ -132,16 +133,21 @@ public class Pathfinder
                 }
             }
         }
+        if (!canFindWay)
+        {
+            throw new Exception("Nie znajdę ścieżki, losuj jeszcze raz");
+        }
 
         //Make the start and end path 
+       
+
+        //Show the path
+        ShowPath();
         grid[(int)startTile.x, (int)startTile.y].Height = 1;
         grid[(int)startTile.x, (int)startTile.y].TerrainType = TerrainType.Path;
 
         grid[(int)endTile.x, (int)endTile.y].Height = 1;
         grid[(int)endTile.x, (int)endTile.y].TerrainType = TerrainType.Path;
-
-        //Show the path
-        ShowPath();
         return grid;
     }
 
@@ -155,7 +161,11 @@ public class Pathfinder
         while (startFound == false)
         {
             List<Vector2> adjacentTiles = GetAdjacentTiles(currentTile);
-
+            if(adjacentTiles.Count == 0)
+            {
+                Debug.Log("przejebane, nie ma ścieżki");
+                //throw new Exception("Przejebane, chyba nie ma ściezki");
+            }
             //check to see what newest current tile
             foreach (Vector2 adjacentTile in adjacentTiles)
             {
