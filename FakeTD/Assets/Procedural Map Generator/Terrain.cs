@@ -13,14 +13,17 @@ public class Terrain : IFTDMapObject {
         get { return _height; }
         set { _height = value; }
     }
+
+    public int cost = 0;
+    public int heuristic = 0;
+    public int total = 0;
+
     public Terrain(TerrainType terrainType,int height)
     {
         TerrainType = terrainType;
         Height = height;
     }
 }
-
-
 
 public enum TerrainType
 {

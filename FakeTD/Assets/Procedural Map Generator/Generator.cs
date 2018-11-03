@@ -19,7 +19,7 @@ public class Generator : MonoBehaviour
     int _minZ = 0;
     int _maxZ = 64;
     int _minY = 0;
-    int _maxY = 15;//Max height of mountains
+    int _maxY = 5;//Max height of mountains15
 
     void Start()
     {
@@ -47,10 +47,35 @@ public class Generator : MonoBehaviour
                 }
             }
         }
-        map = generatePath(map);
+
+        Vector2 start = new Vector2();
+        Vector2 end = new Vector2();
+
+        for (int i =0;i < _maxX; i++)
+        {
+            if (map[i, 0].TerrainType == TerrainType.Normal)
+            {
+                start = new Vector2(i, 0);
+                break;
+            }
+                
+        }
+        for (int i = _maxX-1; i >=0 ; i--)
+        {
+            if (map[i, _maxZ-1].TerrainType == TerrainType.Normal)
+            {
+                end = new Vector2(i, _maxZ-1);
+                break;
+            }
+
+        }
+
+
+        var pathFinder = new Pathfinder(map, _maxX, _maxZ);
+        map = pathFinder.SearchPath(start, end);//generateFakePath(map);//todo podmienić
         return map;
     }
-    private Terrain[,] generatePath(Terrain[,] map)
+    private Terrain[,] generateFakePath(Terrain[,] map)
     {
         for (int i = _minZ; i < _maxZ; i++)
         {
