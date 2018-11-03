@@ -12,14 +12,15 @@ public class Generator : MonoBehaviour
     public GameObject destroyedTurretprefab;
     public GameObject pathPrefab;
     public float obstaclePropabilityPercent;
+    public bool TrimTheMap;
 
     PerlinNoise noise;
     int _minX = 0;
-    int _maxX = 64;
+   public int _maxX = 64;
     int _minZ = 0;
-    int _maxZ = 64;
+    public int _maxZ = 64;
     int _minY = 0;
-    int _maxY = 15;//Max height of mountains15
+    public int _maxY = 15;//Max height of mountains15
 
     void Start()
     {
@@ -69,6 +70,45 @@ public class Generator : MonoBehaviour
                 needToRegenerate = true;
             }
         } while (needToRegenerate);
+        if (TrimTheMap)
+        {
+            map = trimTheMap(map);
+        }
+        return map;
+    }
+
+    private Terrain[,] trimTheMap(Terrain[,] map)
+    {
+        int maxX = _maxX / 2;
+        int minX = _maxX / 2;
+
+        for(int i = 0; i < _maxX; i++)
+        {
+            for(int j = 0; j < _maxZ; j++)
+            {
+                if(map[i,j].TerrainType == TerrainType.Path)
+                {
+                    if (i > maxX)
+                    {
+                        maxX = i;
+                    }
+                    if (i < minX)
+                    {
+                        minX = i;
+                    }
+                }
+            }
+        }
+
+        if (minX > _minX-2)
+            _minX = minX - 2;
+        else
+            _minX = minX;
+
+        if (maxX < _maxX + 3)
+            _maxX = maxX + 3;
+        else
+            _maxX = maxX;
 
         return map;
     }
@@ -115,25 +155,6 @@ public class Generator : MonoBehaviour
             }
             i++;
         }
-
-        //for (int i = 0; i < _maxX - 1; i++)
-        //{
-        //    if (map[i, 0].TerrainType == TerrainType.Normal)
-        //    {
-        //        start = new Vector2(i, 0);
-        //        break;
-        //    }
-
-        //}
-        //for (int i = _maxX - 1; i >= 0; i--)
-        //{
-        //    if (map[i, _maxZ - 1].TerrainType == TerrainType.Normal)
-        //    {
-        //        end = new Vector2(i, _maxZ - 1);
-        //        break;
-        //    }
-
-        //}
     }
 
     private Terrain[,] generateFakePath(Terrain[,] map)

@@ -291,7 +291,11 @@ MonoBehaviour:
   destroyedTurretprefab: {fileID: 133746, guid: 9f47b72fd17f0dc468063b61e4cb5029,
     type: 2}
   pathPrefab: {fileID: 133746, guid: ecf7e965687b7614f97bb69e8463566e, type: 2}
-  obstaclePropabilityPercent: 0.25
+  obstaclePropabilityPercent: 0.4
+  TrimTheMap: 0
+  _maxX: 32
+  _maxZ: 64
+  _maxY: 10
 --- !u!4 &785495764
 Transform:
   m_ObjectHideFlags: 0
