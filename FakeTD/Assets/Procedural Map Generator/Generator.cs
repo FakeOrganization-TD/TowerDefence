@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Generator : MonoBehaviour
 {
@@ -13,23 +11,33 @@ public class Generator : MonoBehaviour
     public GameObject pathPrefab;
     public float obstaclePropabilityPercent;
     public bool TrimTheMap;
-
+    
     PerlinNoise noise;
     int _minX = 0;
-   public int _maxX = 64;
-    int _minZ = 0;
+    public int _maxX = 64;
+    readonly int _minZ = 0;
     public int _maxZ = 64;
-    int _minY = 0;
+    readonly int _minY = 0;
     public int _maxY = 15;//Max height of mountains15
 
     void Start()
     {
-        noise = new PerlinNoise(Random.Range(1000000, 10000000));
-        GenerateMapFromMatrix(GenerateMapMatrix(obstaclePropabilityPercent));
+        //noise = new PerlinNoise(Random.Range(1000000, 10000000));
+        //GenerateMapFromMatrix(GenerateMapMatrix(obstaclePropabilityPercent));
         //Regenerate();
     }
 
-    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent)
+    public Terrain[,] RunGenerationProcedure(Vector2? startPosition)
+    {
+        noise = new PerlinNoise(Random.Range(1000000, 10000000));
+        var terrainMatrix = GenerateMapMatrix(obstaclePropabilityPercent,out startPosition);
+        GenerateMapFromMatrix(terrainMatrix);
+        return terrainMatrix;
+        
+    }
+    
+
+    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent, out Vector2? startPosition) // nie więcej niż 40 %
     {
         Terrain[,] map = new Terrain[_maxX, _maxZ];
         bool needToRegenerate = false;
@@ -57,12 +65,13 @@ public class Generator : MonoBehaviour
             Vector2 start, end;
             findStartAndEndOfMap(map, out start, out end);
 
+            startPosition = start; // ' COŚCIE TU NAJEBALI CHUJE !?' 
             var pathFinder = new Pathfinder(map, _maxX, _maxZ);
             try
             {
                 map = pathFinder.SearchPath(start, end);//generateFakePath(map);//todo podmienić
                                                         //  map = generateFakePath(map);
-                
+
             }
             catch
             {
@@ -74,6 +83,8 @@ public class Generator : MonoBehaviour
         {
             map = trimTheMap(map);
         }
+
+       
         return map;
     }
 
@@ -82,11 +93,11 @@ public class Generator : MonoBehaviour
         int maxX = _maxX / 2;
         int minX = _maxX / 2;
 
-        for(int i = 0; i < _maxX; i++)
+        for (int i = 0; i < _maxX; i++)
         {
-            for(int j = 0; j < _maxZ; j++)
+            for (int j = 0; j < _maxZ; j++)
             {
-                if(map[i,j].TerrainType == TerrainType.Path)
+                if (map[i, j].TerrainType == TerrainType.Path)
                 {
                     if (i > maxX)
                     {
@@ -100,15 +111,23 @@ public class Generator : MonoBehaviour
             }
         }
 
-        if (minX > _minX-2)
+        if (minX > _minX - 2)
+        {
             _minX = minX - 2;
+        }
         else
+        {
             _minX = minX;
+        }
 
         if (maxX < _maxX + 3)
+        {
             _maxX = maxX + 3;
+        }
         else
+        {
             _maxX = maxX;
+        }
 
         return map;
     }
@@ -123,13 +142,13 @@ public class Generator : MonoBehaviour
         bool notFound = true;
         while (notFound)
         {
-            if (map[_maxX/2 +i, 0].TerrainType == TerrainType.Normal)
+            if (map[_maxX / 2 + i, 0].TerrainType == TerrainType.Normal)
             {
                 start = new Vector2(_maxX / 2 + i, 0);
                 notFound = false;
                 break;
             }
-            else if(map[_maxX / 2 - i, 0].TerrainType == TerrainType.Normal)
+            else if (map[_maxX / 2 - i, 0].TerrainType == TerrainType.Normal)
             {
                 start = new Vector2(_maxX / 2 - i, 0);
                 notFound = false;
@@ -246,7 +265,7 @@ public class Generator : MonoBehaviour
                 int columnHeight = 2 + noise.GetNoise(i - _minX, k - _minZ, _maxY - _minY - 2);
                 for (int j = _minY; j < _minY + columnHeight; j++)
                 {//rows (y values)
-                    GameObject block = (j == _minY + columnHeight - 1) ? normalTerrainPrefab : dirtPrefab;
+                    GameObject block = ( j == _minY + columnHeight - 1 ) ? normalTerrainPrefab : dirtPrefab;
                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
                 }
             }
