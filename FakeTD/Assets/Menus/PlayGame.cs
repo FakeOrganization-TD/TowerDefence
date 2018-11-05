@@ -4,16 +4,19 @@ public class PlayGame : MonoBehaviour
 {
 
     public Generator gene;
+    private GameLogic gameLogic;
     // Use this for initialization
     Terrain[,] terrainMatrix;
-    Vector2 mapStartPosition;
+    Vector2 mapStartPosition,mapEndPosition;
     public void Play()
     {
         
         try
         {
             Debug.Log("Jestem!");
-            terrainMatrix = gene.RunGenerationProcedure(mapStartPosition);
+            terrainMatrix = gene.RunGenerationProcedure(mapStartPosition,mapEndPosition);
+            gameLogic.Initialize(terrainMatrix, mapStartPosition, mapEndPosition);
+
         }
          catch (Exception ex)
         {

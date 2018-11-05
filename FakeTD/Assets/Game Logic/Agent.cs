@@ -13,19 +13,20 @@ public class Agent : MonoBehaviour
 
     public static AgentType agentType;
 
-    static public List<Vector3> waypoints;
-    
+    //static public List<Vector3> waypoints;
+
+    static public List<pathField> waypoints;
     Terrain[,] terrainMatrix;
     Vector3 position,oldPosition;
 
     [SerializeField]
-    static GameObject normalAgentModel;
+    public static GameObject normalAgentModel;
 
     [SerializeField]
-    static GameObject fastAgentModel;
+    public static GameObject fastAgentModel;
 
     [SerializeField]
-    static GameObject tankAgentModel;
+    public static GameObject tankAgentModel;
 
     [SerializeField]
     Vector3 size;
@@ -48,8 +49,6 @@ public class Agent : MonoBehaviour
 	    	
 	}
 
-
-
     
     public Agent(GameObject model, Vector3 startPosition, int hp)
     {
@@ -60,9 +59,12 @@ public class Agent : MonoBehaviour
 
     }
 
-    
+    public void Move()
+    {
+        
+    }
 
- static Agent GetAgent(GameObject model, Vector3 startPosition,AgentType type)
+   public static Agent GetAgent(GameObject model, Vector3 startPosition,AgentType type)
     {
 
         switch (type)

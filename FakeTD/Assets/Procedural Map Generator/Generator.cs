@@ -10,15 +10,19 @@ public class Generator : MonoBehaviour
     public GameObject destroyedTurretprefab;
     public GameObject pathPrefab;
     public float obstaclePropabilityPercent;
+
     public bool TrimTheMap;
     
+
+
     PerlinNoise noise;
     int _minX = 0;
-    public int _maxX = 64;
-    readonly int _minZ = 0;
-    public int _maxZ = 64;
-    readonly int _minY = 0;
-    public int _maxY = 15;//Max height of mountains15
+    int _maxX = 64;
+    int _minZ = 0;
+    int _maxZ = 64;
+    int _minY = 0;
+    int _maxY = 15;//Max height of mountains15
+
 
     void Start()
     {
@@ -27,17 +31,17 @@ public class Generator : MonoBehaviour
         //Regenerate();
     }
 
-    public Terrain[,] RunGenerationProcedure(Vector2? startPosition)
+    public Terrain[,] RunGenerationProcedure(Vector2? startPosition, Vector2? endPosition)
     {
         noise = new PerlinNoise(Random.Range(1000000, 10000000));
-        var terrainMatrix = GenerateMapMatrix(obstaclePropabilityPercent,out startPosition);
+        var terrainMatrix = GenerateMapMatrix(obstaclePropabilityPercent,out startPosition,out endPosition);
         GenerateMapFromMatrix(terrainMatrix);
         return terrainMatrix;
         
     }
     
 
-    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent, out Vector2? startPosition) // nie więcej niż 40 %
+    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent, out Vector2? startPosition, out Vector2? endPosition) // nie więcej niż 40 %
     {
         Terrain[,] map = new Terrain[_maxX, _maxZ];
         bool needToRegenerate = false;
@@ -65,7 +69,8 @@ public class Generator : MonoBehaviour
             Vector2 start, end;
             findStartAndEndOfMap(map, out start, out end);
 
-            startPosition = start; // ' COŚCIE TU NAJEBALI CHUJE !?' 
+            startPosition = start;
+            endPosition = end;
             var pathFinder = new Pathfinder(map, _maxX, _maxZ);
             try
             {
@@ -79,6 +84,7 @@ public class Generator : MonoBehaviour
                 needToRegenerate = true;
             }
         } while (needToRegenerate);
+
         if (TrimTheMap)
         {
             map = trimTheMap(map);
@@ -129,6 +135,7 @@ public class Generator : MonoBehaviour
             _maxX = maxX;
         }
 
+
         return map;
     }
 
@@ -174,6 +181,25 @@ public class Generator : MonoBehaviour
             }
             i++;
         }
+
+        //for (int i = 0; i < _maxX - 1; i++)
+        //{
+        //    if (map[i, 0].TerrainType == TerrainType.Normal)
+        //    {
+        //        start = new Vector2(i, 0);
+        //        break;
+        //    }
+
+        //}
+        //for (int i = _maxX - 1; i >= 0; i--)
+        //{
+        //    if (map[i, _maxZ - 1].TerrainType == TerrainType.Normal)
+        //    {
+        //        end = new Vector2(i, _maxZ - 1);
+        //        break;
+        //    }
+
+        //}
     }
 
     private Terrain[,] generateFakePath(Terrain[,] map)
