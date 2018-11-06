@@ -13,29 +13,25 @@ public class Agent : MonoBehaviour
 
     public static AgentType agentType;
 
-    //static public List<Vector3> waypoints;
 
-    static public List<pathField> waypoints;
+
+     public static List<Vector2> waypoints;
     Terrain[,] terrainMatrix;
     Vector3 position,oldPosition;
+    private int pathIndex=-5;
+    public  bool isActive;
 
     [SerializeField]
-    public static GameObject normalAgentModel;
-
-    [SerializeField]
-    public static GameObject fastAgentModel;
-
-    [SerializeField]
-    public static GameObject tankAgentModel;
+    GameObject ActualAgentModel;
 
     [SerializeField]
     Vector3 size;
 
     [SerializeField]
-    float scale=1;
+    float scale;
 
     [SerializeField]
-    Vector3 speed;
+    float speed;
 
     [SerializeField]
     Transform targetTransform;
@@ -46,50 +42,73 @@ public class Agent : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-	    	
+        isActive = false;
 	}
 
     
-    public Agent(GameObject model, Vector3 startPosition, int hp)
+    public Agent(GameObject model, Vector3 startPosition, int hp) : base()
     {
         this.position = startPosition;
         size = Vector3.one;
         this.healthPoints = hp;
-        speed = Vector3.one;
+        speed = 5f;
+        ActualAgentModel = model;
+        scale = 1;
+        pathIndex = waypoints.Count - 1;
+       
 
+       // isActive = true;
     }
 
     public void Move()
     {
+        if (pathIndex <= 0)
+            return;
+
+        float step = Time.deltaTime * speed;
+            var x = waypoints[pathIndex].x;
+            var y = waypoints[pathIndex].y;
+            var z = Generator.GeneratedMap[(int) x, (int) y].Height;
+        //ActualAgentModel.transform.position = new Vector3(x, z, y);
+        Vector3 origin = ActualAgentModel.transform.position;
+        Vector3 destination = new Vector3(x, z, y);
+        //  Vector3 move = Vector3.MoveTowards(origin, destination, 1f);
+        //   ActualAgentModel.transform.Translate(move * Time.deltaTime, Space.World);
+        ActualAgentModel.transform.position = Vector3.MoveTowards(origin, destination, step);
+
+        if (pathIndex > 0 && ActualAgentModel.transform.position ==destination)
+        {
+            Debug.Log("pathIndex Value: "+pathIndex.ToString());
+            Debug.Log("ONIEONIE");
+            pathIndex--;
+        }
+
+          
+       
+     
         
     }
+     
 
-   public static Agent GetAgent(GameObject model, Vector3 startPosition,AgentType type)
-    {
-
-        switch (type)
-        {
-            case AgentType.Normal:
-                return new Agent(normalAgentModel, startPosition, 100);
-
-            case AgentType.Fast:
-                return new Agent(fastAgentModel, startPosition, 40);
-
-            case AgentType.Tank:
-                return new Agent(tankAgentModel, startPosition, 150);
-
-            default: return null; // A się ktoś zdziwi HEHE pozdro dla kumatych
-
-        }
-    }
 
     void Destroy()
     {
         
     }
     // Update is called once per frame
-    void Update ()
+   public void Update ()
     {
-		
+        if(waypoints !=null )
+        {
+            if(isActive ==false)
+            {
+                pathIndex = waypoints.Count - 1;
+                isActive = true;
+            }
+            Debug.Log("Jestem przed move");
+            Move();
+        }
+            
+   
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 public class Generator : MonoBehaviour
 {
     public GameObject dirtPrefab;
@@ -10,18 +10,18 @@ public class Generator : MonoBehaviour
     public GameObject destroyedTurretprefab;
     public GameObject pathPrefab;
     public float obstaclePropabilityPercent;
-
+    public List<Vector2> pathTilesList;
     public bool TrimTheMap;
-    
 
+   public static Terrain[,] GeneratedMap;
 
     PerlinNoise noise;
-    int _minX = 0;
-    int _maxX = 64;
-    int _minZ = 0;
-    int _maxZ = 64;
-    int _minY = 0;
-    int _maxY = 15;//Max height of mountains15
+  public  int _minX = 0;
+  public  int _maxX = 16;
+  public  int _minZ = 0;
+  public  int _maxZ = 16;
+  public  int _minY = 0;
+  public  int _maxY = 5;     //Max height of mountains15
 
 
     void Start()
@@ -31,17 +31,18 @@ public class Generator : MonoBehaviour
         //Regenerate();
     }
 
-    public Terrain[,] RunGenerationProcedure(Vector2? startPosition, Vector2? endPosition)
+    public Terrain[,] RunGenerationProcedure(out Vector2 startPosition,out Vector2 endPosition)
     {
         noise = new PerlinNoise(Random.Range(1000000, 10000000));
         var terrainMatrix = GenerateMapMatrix(obstaclePropabilityPercent,out startPosition,out endPosition);
         GenerateMapFromMatrix(terrainMatrix);
+        GeneratedMap = terrainMatrix;
         return terrainMatrix;
         
     }
     
 
-    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent, out Vector2? startPosition, out Vector2? endPosition) // nie więcej niż 40 %
+    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent, out Vector2 startPosition, out Vector2 endPosition) // nie więcej niż 40 %
     {
         Terrain[,] map = new Terrain[_maxX, _maxZ];
         bool needToRegenerate = false;
@@ -75,7 +76,7 @@ public class Generator : MonoBehaviour
             try
             {
                 map = pathFinder.SearchPath(start, end);//generateFakePath(map);//todo podmienić
-                                                        //  map = generateFakePath(map);
+                pathTilesList = new List<Vector2>(pathFinder.pathTiles);                                    //  map = generateFakePath(map);
 
             }
             catch
@@ -93,6 +94,8 @@ public class Generator : MonoBehaviour
        
         return map;
     }
+
+
 
     private Terrain[,] trimTheMap(Terrain[,] map)
     {

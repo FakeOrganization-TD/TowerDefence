@@ -9,6 +9,7 @@ public class Pathfinder
     Vector2 startTile;
     Vector2 endTile;
     Vector2 currentTile;
+    public List<Vector2> pathTiles;
 
     private int gridWidth;
     private int gridHeight;
@@ -156,14 +157,14 @@ public class Pathfinder
         bool startFound = false;
 
         Vector2 currentTile = endTile;
-        List<Vector2> pathTiles = new List<Vector2>();
+       pathTiles = new List<Vector2>();
 
         while (startFound == false)
         {
             List<Vector2> adjacentTiles = GetAdjacentTiles(currentTile);
             if(adjacentTiles.Count == 0)
             {
-                Debug.Log("przejebane, nie ma ścieżki");
+                Debug.Log("Nie ma ścieżki");
                 //throw new Exception("Przejebane, chyba nie ma ściezki");
             }
             //check to see what newest current tile
@@ -185,7 +186,7 @@ public class Pathfinder
                         pathTiles.Add(adjacentTile);
 
                         //Show the ball //this is the path
-                        grid[(int)adjacentTile.x, (int)adjacentTile.y].Height = 1;
+                        grid[(int)adjacentTile.x, (int)adjacentTile.y].Height =1;
                         grid[(int)adjacentTile.x, (int)adjacentTile.y].TerrainType = TerrainType.Path;
                       //  LE.ShowEntity(grid[(int)adjacentTile.x, (int)adjacentTile.y].ball);
 

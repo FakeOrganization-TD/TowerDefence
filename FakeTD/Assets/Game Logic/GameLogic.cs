@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Collections;
+/// ///////////////////////////////////////
 
 public class pathField
 {
@@ -13,6 +16,9 @@ public class pathField
         terrain = ter;
     }
 }               
+
+/// ////////////////////////////////////
+
 public class GameLogic : MonoBehaviour
 {
 
@@ -28,71 +34,59 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     static Vector2 mapEndPosition;
 
-    
-    List<pathField> pathFields;
-
+    public List<Vector2> pathTiles;
     Agent agent;
+
+    List<Agent> agents;
+     
     // Use this for initialization
     void Start()
     {
-       
-    }
-
-    private void Awake()
-    {
-        pathFields = new List<pathField>();
-
-    }
-    
-    
-    // To ma w teorii dać liste kafelek ścieżki (path) 
-    public void Initialize(Terrain[,] terrain, Vector2 startPoint,Vector2 endPoint)
-    {
-        mapStartPosition = startPoint;
-        mapEndPosition = endPoint;
-       
-        // x- kolumna y - rząd 
-        int x = (int) mapStartPosition.x;
-        int y = (int) mapStartPosition.y;
-        pathFields.Add(new pathField(new Vector2(x, y), terrain[x, y])); 
-        do
-        {
-            if (!(y+1 > terrain.GetLength(1)) && terrain[x,y+1].TerrainType == TerrainType.Path && terrain[x, y + 1] != pathFields[pathFields.Count - 1].terrain) // Sprawdzamy sąsiadujące elementy tablicy
-            {
-                pathFields.Add(new pathField(new Vector2(x, y + 1), terrain[x, y + 1]));
-                y++;
-            }
-            else if (!(y-1 < 0) && terrain[x,y-1].TerrainType == TerrainType.Path && terrain[x,y-1]!=pathFields[pathFields.Count-1].terrain)
-            {
-                pathFields.Add(new pathField(new Vector2(x, y - 1), terrain[x, y - 1]));
-                y--;
-
-            }
-            else if (!( x - 1 < 0 ) && terrain[x - 1, y ].TerrainType == TerrainType.Path && terrain[x - 1, y ] != pathFields[pathFields.Count - 1].terrain)
-            {
-                pathFields.Add(new pathField(new Vector2(x-1, y), terrain[x-1, y ]));
-                x--;
-
-            }
-            else if (!( x + 1 < 0 ) && terrain[x + 1, y].TerrainType == TerrainType.Path && terrain[x + 1, y] != pathFields[pathFields.Count - 1].terrain)
-            {
-                pathFields.Add(new pathField(new Vector2(x + 1, y), terrain[x + 1, y]));
-                x++;
-
-            }
-
-        }
-        while (x != mapEndPosition.x && y !=mapEndPosition.y); // jeśli są równe to ma przerwać 
-
-        Agent.waypoints = pathFields;
-
-        // TUTAJ SKOŃCZYLIŚMY
-        //agent = Agent.GetAgent(Agent.normalAgentModel,new Vector3())
+        agents = new List<Agent>();
         
     }
-    // Update is called once per frame
-    void Update()
-    {
 
+    
+        // Argumenty wyrzucić do konstruktora
+        // zmienić nazwę na spawnAgent
+        // Wrzucić do update i ustawić przed nim licznik czasu,
+        // aby moby tworzyły się co określony interwał.
+    public void Initalize(Terrain[,] terrain,Vector2 startPoint,Vector2 endPoint)
+    {
+        Agent.waypoints = new List<Vector2>(pathTiles);
+
+        //agent = new Agent(GameObject.Find("Enemy"))
+        float timeLeft = 10f;
+
+        #region Debug Code
+        GameObject enemy = GameObject.Find("Normal_Enemy");
+
+        for (int i = 0; i < 5; i++)
+        {
+
+                agents.Add(new Agent(
+               Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, 100
+                ));
+    
+            }
+        GameObject.DestroyObject(enemy);
+        
+
+
+
+        #endregion
+
+    }
+
+    // To ma w teorii dać liste kafelek ścieżki (path) 
+
+    // Update is called once per frame
+  public  void Update()
+    {
+        foreach (Agent agent in agents)
+        {
+
+            agent.Update();
+        }
     }
 }
