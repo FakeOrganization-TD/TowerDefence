@@ -26,7 +26,7 @@ public class GameLogic : MonoBehaviour
     readonly Terrain[,] terrainMatrix;
 
     [SerializeField]
-    readonly int interval;
+    const float interval = 1f;
 
     [SerializeField]
     static Vector2 mapStartPosition;
@@ -34,47 +34,32 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     static Vector2 mapEndPosition;
 
+    Vector2 startPoint;
     public List<Vector2> pathTiles;
     Agent agent;
 
     List<Agent> agents;
-     
+    
+    const int maxNumberOfMobs = 5;
+    int NumberOfMobs;
+    float timeLeft = 1.0f;
+    bool initalised = false;
     // Use this for initialization
     void Start()
     {
         agents = new List<Agent>();
-        
+        NumberOfMobs = 0;
     }
 
-    
-        // Argumenty wyrzucić do konstruktora
-        // zmienić nazwę na spawnAgent
-        // Wrzucić do update i ustawić przed nim licznik czasu,
-        // aby moby tworzyły się co określony interwał.
+
+    // Wyczyścić to niezbędnego minimum 
     public void Initalize(Terrain[,] terrain,Vector2 startPoint,Vector2 endPoint)
     {
         Agent.waypoints = new List<Vector2>(pathTiles);
-
+        this.startPoint = startPoint;
         //agent = new Agent(GameObject.Find("Enemy"))
-        float timeLeft = 10f;
-
-        #region Debug Code
-        GameObject enemy = GameObject.Find("Normal_Enemy");
-
-        for (int i = 0; i < 5; i++)
-        {
-
-                agents.Add(new Agent(
-               Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, 100
-                ));
-    
-            }
-        GameObject.DestroyObject(enemy);
-        
-
-
-
-        #endregion
+        initalised = true;
+   
 
     }
 
@@ -83,6 +68,32 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
   public  void Update()
     {
+        #region agentSpawner 
+        if (!initalised)
+            return;
+
+            timeLeft -= Time.deltaTime;
+            if (timeLeft < 0 && NumberOfMobs < maxNumberOfMobs)
+            {
+            
+            GameObject enemy = GameObject.Find("Normal_Enemy");
+
+          
+                agents.Add(new Agent(
+               Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, 100
+                ));
+
+
+
+
+            NumberOfMobs++;
+
+            timeLeft = interval;
+
+            }
+        #endregion
+
+        if (agents != null)
         foreach (Agent agent in agents)
         {
 
