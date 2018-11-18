@@ -40,7 +40,7 @@ public class GameLogic : MonoBehaviour
 
     List<Agent> agents;
     
-    const int maxNumberOfMobs = 5;
+    const int maxNumberOfMobs = 10;
     int NumberOfMobs;
     float timeLeft = 1.0f;
     bool initalised = false;
@@ -56,7 +56,12 @@ public class GameLogic : MonoBehaviour
     public void Initalize(Terrain[,] terrain,Vector2 startPoint,Vector2 endPoint)
     {
         Agent.waypoints = new List<Vector2>(pathTiles);
-        this.startPoint = startPoint;
+        Agent.waypoints.Add(startPoint);
+        Agent.waypoints.Add(endPoint);        
+        Agent.waypoints.Reverse();
+
+        this.startPoint = endPoint;
+        
         //agent = new Agent(GameObject.Find("Enemy"))
         initalised = true;
    
@@ -83,9 +88,6 @@ public class GameLogic : MonoBehaviour
                Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, 100
                 ));
 
-
-
-
             NumberOfMobs++;
 
             timeLeft = interval;
@@ -96,7 +98,7 @@ public class GameLogic : MonoBehaviour
         if (agents != null)
         foreach (Agent agent in agents)
         {
-
+            
             agent.Update();
         }
     }

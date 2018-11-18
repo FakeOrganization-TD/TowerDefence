@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Agent : MonoBehaviour
 {
@@ -39,6 +40,8 @@ public class Agent : MonoBehaviour
     [SerializeField]
     int healthPoints;
 
+    bool exists;
+
     // Use this for initialization
     void Start ()
     {
@@ -55,14 +58,14 @@ public class Agent : MonoBehaviour
         ActualAgentModel = model;
         scale = 1;
         pathIndex = waypoints.Count - 1;
-       
+        exists = true;
 
        // isActive = true;
     }
 
     public void Move()
     {
-        if (pathIndex <= 0)
+        if (pathIndex < 0 || !exists)
             return;
 
         float step = Time.deltaTime * speed;
@@ -82,19 +85,24 @@ public class Agent : MonoBehaviour
             Debug.Log("ONIEONIE");
             pathIndex--;
         }
-
+        if( x == waypoints[0].x && y == waypoints[0].y)
+        {
+            Destroy(ActualAgentModel);
+            Destroy(this);
+            exists = false;
+        }
           
        
      
-        
+            
     }
      
 
 
-    void Destroy()
-    {
-        
-    }
+    //void Destroy()
+    //{
+       
+    //}
     // Update is called once per frame
    public void Update ()
     {

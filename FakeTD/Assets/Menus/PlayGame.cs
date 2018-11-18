@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
+
 public class PlayGame : MonoBehaviour
 {
 
@@ -14,13 +16,16 @@ public class PlayGame : MonoBehaviour
     {
         gameObject.AddComponent<GameLogic>();
         gameLogic = GameObject.FindObjectOfType<GameLogic>();
-        button = GameObject.Find("BtnNewGame");
+        Play();
     }
     public void Play()
     {
-
+       
+        // button = GameObject.Find("BtnNewGame");
         // ukrywa guzik
-        button.transform.localScale = new Vector3(0, 0, 0);
+        // [ Stary Button]
+        //    button.transform.localScale = new Vector3(0, 0, 0);
+
         
         try
         {
