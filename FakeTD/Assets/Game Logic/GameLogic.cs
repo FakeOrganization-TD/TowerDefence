@@ -61,7 +61,10 @@ public class GameLogic : MonoBehaviour
         Agent.waypoints.Reverse();
 
         this.startPoint = endPoint;
+
         
+
+
         //agent = new Agent(GameObject.Find("Enemy"))
         initalised = true;
    

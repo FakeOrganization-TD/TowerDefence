@@ -19,19 +19,25 @@ public class CameraController : MonoBehaviour
     int RLEFT = 1;
     int RRIGHT = 2;
 
-    Vector3 tsize;
+    public int TerrainBoundX;
+    public int TerrainBoundY;
+    int offset = 15;
+
+    Vector3 tsize= new Vector3(50,50,50);
     Transform camt;
 
     // Use this for initialization
     void Start()
     {
-       
-        camt = transform;
+
+        // camt = transform;
+        camt = GameObject.FindGameObjectWithTag("Camera").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.W))
         {
             dir = UP;
@@ -90,22 +96,33 @@ public class CameraController : MonoBehaviour
         //camera scroll
         if (dir == UP)
         {
-            //if (camt.position.z<tsize.z-10)	//is inside terrain border?
-            camt.Translate(0, 0, 10 * Time.deltaTime);
+        //    if (camt.position.z < tsize.z - 10) //is inside terrain border?\
+               if(camt.position.z < TerrainBoundY -offset)
+            {
+                camt.transform.eulerAngles = camt.transform.eulerAngles - new Vector3(0, 0, 50);
+                camt.Translate(0, 0, 10 * Time.deltaTime + 10);
+                camt.transform.eulerAngles = camt.transform.eulerAngles + new Vector3(0, 0, 50);
+            }
+            
+          //      camt.Translate(0, , 0 );
         }
         else if (dir == DOWN)
         {
-            //if (camt.position.z>10)	//is inside terrain border?
-            camt.Translate(0, 0, -10 * Time.deltaTime);
+
+            //if (camt.position.z > 10)   //is inside terrain border?
+            camt.Translate(0, 8 * Time.deltaTime, -10 * Time.deltaTime);
         }
         else if (dir == LEFT)
         {
-            //if (camt.position.x>10)	//is inside terrain border?
-            camt.Translate(-10 * Time.deltaTime, 0, 0);
+            if (camt.position.x < 0 - offset )
+                return;
+           // if (camt.position.x > 10)   //is inside terrain border?
+                camt.Translate(-10 * Time.deltaTime, 0, 0);
         }
         else if (dir == RIGHT)
         {
-            //if (camt.position.x<tsize.x-10)	//is inside terrain border?
+           
+            //if (camt.position.x < tsize.x - 10) //is inside terrain border?
             camt.Translate(10 * Time.deltaTime, 0, 0);
         }
         //camera rotation with middle mouse
@@ -134,21 +151,21 @@ public class CameraController : MonoBehaviour
             camt.LookAt(transform.position);
         }
         // Mouse wheel zoom 
-        if (Input.GetAxis("Mouse ScrollWheel") < 0 && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-        {
-            if (Camera.main.fieldOfView <= 125)
-                Camera.main.fieldOfView += 2;
-            if (Camera.main.orthographicSize <= 7)
-                Camera.main.orthographicSize += 0.2f;
-        }
+        //if (Input.GetAxis("Mouse ScrollWheel") < 0 && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        //{
+        //    if (Camera.main.fieldOfView <= 125)
+        //        Camera.main.fieldOfView += 2;
+        //    if (Camera.main.orthographicSize <= 7)
+        //        Camera.main.orthographicSize += 0.2f;
+        //}
 
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-        {
-            if (Camera.main.fieldOfView > 2)
-                Camera.main.fieldOfView -= 2;
-            if (Camera.main.orthographicSize >= 3)
-                Camera.main.orthographicSize -= 0.2f;
-        }
+        //if (Input.GetAxis("Mouse ScrollWheel") > 0 && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        //{
+        //    if (Camera.main.fieldOfView > 2)
+        //        Camera.main.fieldOfView -= 2;
+        //    if (Camera.main.orthographicSize >= 3)
+        //        Camera.main.orthographicSize -= 0.2f;
+        //}
 
 
 

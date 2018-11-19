@@ -11,11 +11,13 @@ public class PlayGame : MonoBehaviour
     // Use this for initialization
     Terrain[,] terrainMatrix;
     Vector2 mapStartPosition,mapEndPosition;
-
+    TowerBuilder towerBuilder;
     public void Start()
     {
         gameObject.AddComponent<GameLogic>();
         gameLogic = GameObject.FindObjectOfType<GameLogic>();
+        gameObject.AddComponent<TowerBuilder>();
+
         Play();
     }
     public void Play()
@@ -37,6 +39,7 @@ public class PlayGame : MonoBehaviour
 
             
             gameLogic.Initalize(terrainMatrix, mapStartPosition, mapEndPosition);
+            
 
         }
          catch (Exception ex)

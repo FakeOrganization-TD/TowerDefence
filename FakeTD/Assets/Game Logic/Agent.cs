@@ -51,6 +51,7 @@ public class Agent : MonoBehaviour
     
     public Agent(GameObject model, Vector3 startPosition, int hp) : base()
     {
+
         this.position = startPosition;
         size = Vector3.one;
         this.healthPoints = hp;
@@ -61,6 +62,39 @@ public class Agent : MonoBehaviour
         exists = true;
 
        // isActive = true;
+    }
+
+    public Agent(GameObject model, Vector3 startPosition, AgentType type) : base()
+    {
+
+        this.position = startPosition;
+        size = Vector3.one;
+        switch (type)
+        {
+            case AgentType.Normal:
+                healthPoints = 100;
+                speed = 5f;
+                break;
+
+            case AgentType.Fast:
+                healthPoints = 40;
+                speed = 8f;
+                break;
+
+            case AgentType.Tank:
+                healthPoints = 160;
+                speed = 2.5f;
+                break;
+
+        }
+
+
+        ActualAgentModel = model;
+        scale = 1;
+        pathIndex = waypoints.Count - 1;
+        exists = true;
+
+        // isActive = true;
     }
 
     public void Move()
