@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Assets.Game_Logic;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerBuilder : MonoBehaviour {
+public  class TowerBuilder : MonoBehaviour
+{
 
-   public enum ChosenTower
+    public  enum ChosenTower
     {
         Basic,
         CannonTower,
@@ -13,6 +15,8 @@ public class TowerBuilder : MonoBehaviour {
         Fast,
         None
     }
+    
+    
 
     float MousePosX;
     float MousePosY;
@@ -21,10 +25,10 @@ public class TowerBuilder : MonoBehaviour {
     public GameObject Fast;
     public GameObject Sniper;
     public GameObject CannonTower;
-    GameObject chosenTowerModel;
-    
-    ChosenTower chosenTower;
-    
+    static GameObject chosenTowerModel ;
+    public GameObject MainCamera;
+   // ChosenTower chosenTower;
+
     //public TowerBuilder(GameObject basic, GameObject cannonTower, GameObject sniper, GameObject fast, ChosenTower chosenTower)
     //{
     //    Basic = basic;
@@ -34,15 +38,17 @@ public class TowerBuilder : MonoBehaviour {
     //    this.chosenTower = chosenTower;
     //}
 
-    
-   public void ChoseTower( string chosenTower)
-    {
-        this.chosenTower=(ChosenTower)Enum.Parse(typeof(ChosenTower), chosenTower, true);
 
-        switch (this.chosenTower)
+    public  void ChoseTower( string strChosenTower)
+    {
+        MainCamera = GameObject.FindGameObjectWithTag("Camera");
+        TowerChoser.isSelected = true;
+        TowerChoser.ChosenTower=(ChosenTower)Enum.Parse(typeof(ChosenTower), strChosenTower, true);
+      
+        switch (TowerChoser.ChosenTower)
         {
             case ChosenTower.Basic: Debug.Log("IT CANONS !");
-                chosenTowerModel = Instantiate( GameObject.FindGameObjectWithTag("BasicTowerTag"));
+               
 
                 break;
 
@@ -66,24 +72,37 @@ public class TowerBuilder : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start ()
+     void Awake ()
     {
-        chosenTower = ChosenTower.None;
+       //chosenTower = ChosenTower.None;
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+   void Update ()
     {
-        MousePosX = Input.mousePosition.x;
-        MousePosY = Input.mousePosition.y;
-        MousePosZ = Input.mousePosition.z;
-        
-        if (chosenTower != ChosenTower.None)
+        //MousePosX = Input.mousePosition.x;
+        //MousePosY = Input.mousePosition.y;
+        //  MousePosZ = Input.mousePosition.z;
+    
+        if (Camera.main == null)
+            return;
+        var v3 = Input.mousePosition;
+        v3.z = 10.0f;
+        v3 = Camera.main.ScreenToWorldPoint(v3);
+
+      
+        if (TowerChoser.ChosenTower != ChosenTower.None)
         {
-            switch (chosenTower)
+            switch (TowerChoser.ChosenTower)
             {
                 case ChosenTower.Basic:
-                    chosenTowerModel.transform.position = new Vector3(MousePosX, MousePosY, MousePosZ);  
+                    if (TowerChoser.isSelected)
+                    {
+                        chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag("BasicTowerTag"));
+                        TowerChoser.isSelected = false;
+                    }
+                    
+                    chosenTowerModel.transform.position = v3;  
 
                     break;
 

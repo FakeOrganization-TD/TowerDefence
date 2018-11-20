@@ -22,7 +22,8 @@ public class Generator : MonoBehaviour
   public  int _maxZ = 16;
   public  int _minY = 0;
   public  int _maxY = 5;     //Max height of mountains15
-
+    public int rows;
+    public int cols;
 
     void Start()
     {
@@ -90,7 +91,8 @@ public class Generator : MonoBehaviour
         {
             map = trimTheMap(map);
         }
-
+        rows = map.GetLength(0);
+        cols = map.GetLength(1);
        
         return map;
     }
