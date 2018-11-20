@@ -101,9 +101,9 @@ public  class TowerBuilder : MonoBehaviour
                         chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag("BasicTowerTag"));
                         TowerChoser.isSelected = false;
                     }
+                    chosenTowerModel.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    chosenTowerModel.transform.position = v3;
                     
-                    chosenTowerModel.transform.position = v3;  
-
                     break;
 
                 case ChosenTower.CannonTower:
