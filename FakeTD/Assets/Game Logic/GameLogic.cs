@@ -84,7 +84,7 @@ public class GameLogic : MonoBehaviour
             if (timeLeft < 0 && NumberOfMobs < maxNumberOfMobs)
             {
             
-            GameObject enemy = GameObject.Find("Normal_Enemy");
+            GameObject enemy = GameObject.Find("FastMob");
 
           
                 agents.Add(new Agent(
