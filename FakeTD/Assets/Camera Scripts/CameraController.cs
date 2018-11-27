@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
         gene = GameObject.FindGameObjectWithTag("GeneratorTag").GetComponent<Generator>();
         Target = GameObject.FindGameObjectWithTag("TargetTag");
         // camt = transform;
-        camt = GameObject.FindGameObjectWithTag("Camera").transform;
+        camt = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
 
     // Update is called once per frame

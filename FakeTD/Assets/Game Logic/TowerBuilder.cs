@@ -41,13 +41,14 @@ public  class TowerBuilder : MonoBehaviour
 
     public  void ChoseTower( string strChosenTower)
     {
-        MainCamera = GameObject.FindGameObjectWithTag("Camera");
+        MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         TowerChoser.isSelected = true;
         TowerChoser.ChosenTower=(ChosenTower)Enum.Parse(typeof(ChosenTower), strChosenTower, true);
       
         switch (TowerChoser.ChosenTower)
         {
-            case ChosenTower.Basic: Debug.Log("IT CANONS !");
+            case ChosenTower.Basic:
+                Debug.Log("IT CANONS !");
                
 
                 break;
