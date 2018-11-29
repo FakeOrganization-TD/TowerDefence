@@ -27,7 +27,9 @@ public  class TowerBuilder : MonoBehaviour
     public GameObject CannonTower;
     static GameObject chosenTowerModel ;
     public GameObject MainCamera;
-   // ChosenTower chosenTower;
+    public static Terrain[,] terrainMatrix;
+   
+    // ChosenTower chosenTower;
 
     //public TowerBuilder(GameObject basic, GameObject cannonTower, GameObject sniper, GameObject fast, ChosenTower chosenTower)
     //{
@@ -70,28 +72,71 @@ public  class TowerBuilder : MonoBehaviour
     }
 
 
-
-
-    // Use this for initialization
-     void Awake ()
+    public void AttachTowerToTerrain()
     {
-       //chosenTower = ChosenTower.None;
-	}
+        // RaycastHit hit;
+        Vector3 hitPosition = Vector3.zero;
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Tower tower;
 
-    // Update is called once per frame
-   void Update ()
+        // Achtung Bitte 
+        if (Physics.Raycast(ray, out hit)) //check if the ray hit something
+        {
+            hitPosition = hit.point; //use this position for what you want to do
+            Debug.Log(hit.point);
+        }
+
+
+        if (Input.GetMouseButtonDown(0) && TowerChoser.ChosenTower != ChosenTower.None)
+        {
+            // hitPosition.x += 0.5f;
+            //  hitPosition.z -= 0.5f;
+
+            for (int i = 0; i < terrainMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < terrainMatrix.GetLength(1); j++)
+                {
+                    Rect current = new Rect(i, j, 1, 1);
+                    if (terrainMatrix[i, j].TerrainType == TerrainType.Normal && current.Contains(new Vector2(hitPosition.x + 0.5f, hitPosition.z + 0.5f)))
+                    {
+
+                        hitPosition.y = terrainMatrix[i, j].Height;  // ew. dodać ++
+                        chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag("BasicTowerTag"));
+                        chosenTowerModel.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                        chosenTowerModel.transform.position = new Vector3(
+                            i,
+                            terrainMatrix[i, j].Height,
+                            j - 0.5f);
+                        tower = gameObject.AddComponent<Tower>();
+                        tower.Initialize(chosenTowerModel, chosenTowerModel.transform.position,
+                        Tower.TowerType.Basic);
+                        // tower = new Tower(chosenTowerModel, chosenTowerModel.transform.position,
+                        //Tower.TowerType.Basic);
+                        GameLogic.towers.Add(tower);
+                      //  GameLogic.towers.Add(new Tower(chosenTowerModel, chosenTowerModel.transform.position,
+                    //   Tower.TowerType.Basic));    // (Tower.TowerType) Enum.Parse(typeof(Tower.TowerType), TowerChoser.ChosenTower.ToString())));
+                    }
+                }
+            }
+
+        }
+    }
+
+    public void ChooseTowerFromUI()
     {
-        //MousePosX = Input.mousePosition.x;
-        //MousePosY = Input.mousePosition.y;
-        //  MousePosZ = Input.mousePosition.z;
-    
+
         if (Camera.main == null)
             return;
         var v3 = Input.mousePosition;
+
+        //   Vector3 T;
         v3.z = 10.0f;
         v3 = Camera.main.ScreenToWorldPoint(v3);
+        //   T = Camera.main.ViewportToWorldPoint(Input.mousePosition);
+        //    Debug.Log(v3);
 
-      
+
         if (TowerChoser.ChosenTower != ChosenTower.None)
         {
             switch (TowerChoser.ChosenTower)
@@ -99,12 +144,12 @@ public  class TowerBuilder : MonoBehaviour
                 case ChosenTower.Basic:
                     if (TowerChoser.isSelected)
                     {
-                        chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag("BasicTowerTag"));
+                        //   chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag("BasicTowerTag"));
                         TowerChoser.isSelected = false;
                     }
-                    chosenTowerModel.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                    chosenTowerModel.transform.position = v3;
-                    
+                    // chosenTowerModel.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                    //  chosenTowerModel.transform.position = v3;
+
                     break;
 
                 case ChosenTower.CannonTower:
@@ -120,5 +165,17 @@ public  class TowerBuilder : MonoBehaviour
                     break;
             }
         }
+    }
+    // Use this for initialization
+     void Awake ()
+    {
+       //chosenTower = ChosenTower.None;
+	}
+
+    // Update is called once per frame
+   void Update ()
+    {
+        AttachTowerToTerrain();
+        ChooseTowerFromUI();
 	}
 }

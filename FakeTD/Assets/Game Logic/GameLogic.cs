@@ -21,12 +21,12 @@ public class pathField
 
 public class GameLogic : MonoBehaviour
 {
-
+    static int DebugTargetCounter=0;
     [SerializeField]
     readonly Terrain[,] terrainMatrix;
 
     [SerializeField]
-    const float interval = 1f;
+    const float interval =0.5f; // odstepy pomiedzy agentami 
 
     [SerializeField]
     static Vector2 mapStartPosition;
@@ -36,18 +36,21 @@ public class GameLogic : MonoBehaviour
 
     Vector2 startPoint;
     public List<Vector2> pathTiles;
-    Agent agent;
 
-    List<Agent> agents;
-    
-    const int maxNumberOfMobs = 10;
+
+    public static List<Agent> agents = new List<Agent>();
+    public static List<Tower> towers = new List<Tower>();
+    const int maxNumberOfMobs = 8;
     int NumberOfMobs;
     float timeLeft = 1.0f;
     bool initalised = false;
+
+
     // Use this for initialization
     void Start()
     {
-        agents = new List<Agent>();
+       // towers = new List<Tower>();
+       
         NumberOfMobs = 0;
     }
 
@@ -62,19 +65,132 @@ public class GameLogic : MonoBehaviour
 
         this.startPoint = endPoint;
 
-        
+        TowerBuilder.terrainMatrix = terrain;
 
 
         //agent = new Agent(GameObject.Find("Enemy"))
         initalised = true;
-   
+
+       
+    }
+
+    public bool PointInsideSphere( Vector3 point, Vector3 center , float radius  )
+    {
+        return Vector3.Distance(point, center) < radius;
+    }
+
+    public bool PointInsideCircle(Vector2 point, Vector2 center, float radius)
+    {
+        return Vector2.Distance(point, center) < radius;
+    }
+
+
+    public void ChooseTargetMob_OLD()
+    {
+        #region ChooseTarget
+
+        if (towers.Count > 0)
+            foreach (Tower tower in towers)
+            {
+                if (tower.target == null)
+                {
+                    if (agents != null)
+                        foreach (Agent agent in agents)
+                        {
+                           
+                                    //if (PointInsideSphere(agent.transform.position, tower.position, tower.range))
+                                    //{
+                                    //    tower.target = agent;
+
+                                    //}
+
+                                    if (PointInsideCircle(new Vector2(agent.transform.position.x, agent.transform.position.z)
+                                        , new Vector2(tower.transform.position.x, tower.transform.position.z), tower.range))
+                                    {
+                                DebugTargetCounter++;
+                                        tower.target = agent;
+                                Debug.Log("Ustawilem Ce");
+                                Debug.Log("Laczna ilosc celow: ");
+                                Debug.Log(DebugTargetCounter);
+                                    }
+
+
+                           
+
+
+
+                        }
+                }
+                else if(tower.target !=null)
+                {
+
+                    
+                        tower.Rotate();
+                        if (!PointInsideCircle(new Vector2(tower.target.transform.position.x, tower.target.transform.position.z)
+                   , new Vector2(tower.transform.position.x, tower.transform.position.z), tower.range))
+                            {
+                                tower.target = null;
+                            }
+                        
+                        //    if (!PointInsideSphere(tower.target.transform.position, tower.position, tower.range))
+                        //{
+                        //    tower.target = null;
+                        //}
+
+
+
+                    
+
+                }
+
+            }
+        #endregion
+    }
+
+
+    public void ChooseTargetMob()
+    {
+        if (towers.Count <= 0)
+            return;
+        if (agents.Count <= 0)
+            return;
+        
+        foreach(Tower tower in towers)
+        {
+            if(tower.target == null)
+            {
+                foreach(Agent agent in agents)
+                {
+                    
+                    if (PointInsideCircle(new Vector2(agent.ActualAgentModel.transform.position.x, agent.ActualAgentModel.transform.position.z)
+                                        , new Vector2(tower.model.transform.position.x, tower.model.transform.position.z), tower.range))
+                    {
+                        tower.target = agent;
+                        break;
+                    }
+
+                }
+            }
+            else if(tower.target != null)
+            {
+                if (!PointInsideCircle(new Vector2(tower.target.ActualAgentModel.transform.position.x, 
+                    tower.target.ActualAgentModel.transform.position.z),
+                    new Vector2(tower.model.transform.position.x, tower.model.transform.position.z), tower.range))
+                {
+                    tower.target = null;
+                }
+
+            }
+
+        }
 
     }
+
 
     // To ma w teorii dać liste kafelek ścieżki (path) 
 
     // Update is called once per frame
-  public  void Update()
+    public  void Update()
     {
         #region agentSpawner 
         if (!initalised)
@@ -86,10 +202,12 @@ public class GameLogic : MonoBehaviour
             
             GameObject enemy = GameObject.Find("FastMob");
 
-          
-                agents.Add(new Agent(
-               Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, 100
-                ));
+
+            var Agent = gameObject.AddComponent<Agent>();
+            Agent.Initalize(
+              Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, 100);
+            agents.Add(Agent);
+           
 
             NumberOfMobs++;
 
@@ -98,11 +216,13 @@ public class GameLogic : MonoBehaviour
             }
         #endregion
 
-        if (agents != null)
-        foreach (Agent agent in agents)
-        {
-            
-            agent.Update();
-        }
+        //if (agents != null)
+        //foreach (Agent agent in agents)
+        //{
+                
+        //       // agent.Update();
+
+        //}
+        ChooseTargetMob();
     }
 }

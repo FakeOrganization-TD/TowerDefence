@@ -445,6 +445,32 @@ MonoBehaviour:
   speed: 0
   targetTransform: {fileID: 0}
   healthPoints: 0
+--- !u!1 &690766658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 3d866b97443a15641962d68994e7c16f,
+    type: 3}
+  m_PrefabInternal: {fileID: 1504770916}
+--- !u!114 &690766663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 690766658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2034014158171d40ae3c3658d78ff79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateY: 0
+  damage: 0
+  range: 0
+  burstDamage: 0
+  speed: 0
+  rotation: 0
+  targetPoint: {x: 0, y: 0, z: 0}
+  position: {x: 0, y: 0, z: 0}
+  model: {fileID: 0}
+  target: {fileID: 0}
 --- !u!1 &701842809
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +645,7 @@ MonoBehaviour:
   pathPrefab: {fileID: 133746, guid: ecf7e965687b7614f97bb69e8463566e, type: 2}
   obstaclePropabilityPercent: 0.25
   pathTilesList: []
-  TrimTheMap: 1
+  TrimTheMap: 0
   _minX: 0
   _maxX: 20
   _minZ: 0

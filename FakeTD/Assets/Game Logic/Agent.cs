@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Agent : MonoBehaviour
 {
-   public enum AgentType
+    public enum AgentType
     {
         Normal,
         Fast,
@@ -16,14 +16,14 @@ public class Agent : MonoBehaviour
 
 
 
-     public static List<Vector2> waypoints;
+    public static List<Vector2> waypoints;
     Terrain[,] terrainMatrix;
-    Vector3 position,oldPosition;
-    private int pathIndex=-5;
-    public  bool isActive;
+    Vector3 position, oldPosition;
+    private int pathIndex = -5;
+    public bool isActive;
 
     [SerializeField]
-    GameObject ActualAgentModel;
+  public  GameObject ActualAgentModel;
 
     [SerializeField]
     Vector3 size;
@@ -38,31 +38,50 @@ public class Agent : MonoBehaviour
     Transform targetTransform;
 
     [SerializeField]
-    int healthPoints;
+  public  int healthPoints;
 
     bool exists;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         isActive = false;
-	}
+    }
 
-    
+
     public Agent(GameObject model, Vector3 startPosition, int hp) : base()
     {
 
         this.position = startPosition;
         size = Vector3.one;
         this.healthPoints = hp;
-        speed = 5f;
+        speed = 5;
         ActualAgentModel = model;
         scale = 1;
         pathIndex = waypoints.Count - 1;
         exists = true;
 
-       // isActive = true;
+        // isActive = true;
     }
+
+    public void Initalize(GameObject model, Vector3 startPosition, int hp)
+     {
+
+        this.position = startPosition;
+        size = Vector3.one;
+        this.healthPoints = hp;
+        speed = 6f; // PREDKOSC
+        ActualAgentModel = model;
+        scale = 1;
+        pathIndex = waypoints.Count - 1;
+        exists = true;
+
+    }
+
+
+
+
+    
 
     public Agent(GameObject model, Vector3 startPosition, AgentType type) : base()
     {
@@ -116,11 +135,11 @@ public class Agent : MonoBehaviour
         if (pathIndex > 0 && ActualAgentModel.transform.position ==destination)
         {
             Debug.Log("pathIndex Value: "+pathIndex.ToString());
-            Debug.Log("ONIEONIE");
             pathIndex--;
         }
         if( x == waypoints[0].x && y == waypoints[0].y)
         {
+            GameLogic.agents.Remove(this);
             Destroy(ActualAgentModel);
             Destroy(this);
             exists = false;
@@ -150,7 +169,14 @@ public class Agent : MonoBehaviour
             Debug.Log("Jestem przed move");
             Move();
         }
-            
+         
+        if(healthPoints <=0 )
+        {
+            GameLogic.agents.Remove(this);
+            Destroy(ActualAgentModel);
+            Destroy(this);
+            exists = false;
+        }
    
 	}
 }
