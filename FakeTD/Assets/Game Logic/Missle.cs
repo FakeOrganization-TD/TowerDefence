@@ -31,11 +31,13 @@ public class Missle : MonoBehaviour
 
       
     }
+    // Funkcja,ktora jest odpowiedzialna za trafienie i poruszanie sie pocisku funkcja troche tylko zmieniona z agenta ( Move()  )
     public void HitTarget()
     {
        // if()
         float step = Time.deltaTime * speed;
 
+        // Warunek konieczny, poniewaz agenci sa niszczeni po dotarciu do konca mapy. Bez tego sypie NullReference
         if (TargetAgent == null|| TargetAgent.ActualAgentModel ==null)
         {
             Destroy(MissleModel);

@@ -30,20 +30,20 @@ using UnityEngine;
         {
 
         }
-        // strzela
+        // strzelanie
         public void Shoot()
         {
         if (model == null||target==null)
             return;
          missle = gameObject.AddComponent<Missle>();
-         missle.Initalize(
-            Instantiate(GameObject.FindGameObjectWithTag("BasicMissleTag"),model.transform.position,Quaternion.identity),
-            model,
-            target, 
-            missleType);
+         missle.Initalize( 
+            Instantiate(GameObject.FindGameObjectWithTag("BasicMissleTag"),model.transform.position,Quaternion.identity), // klon sfery,ktora ma byc pociskiem
+            model, // model wierzy
+            target, // ref. do agenta
+            missleType); // typ pocisku 
              
         }
-
+    // obracanie wierza
    public void Rotate()
     {
         if(target!=null)

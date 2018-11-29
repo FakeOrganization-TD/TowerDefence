@@ -147,7 +147,7 @@ public class GameLogic : MonoBehaviour
         #endregion
     }
 
-
+    // Funkcja za pomoca ktorej wierze obieraja agentow na cel 
     public void ChooseTargetMob()
     {
         if (towers.Count <= 0)
@@ -161,7 +161,7 @@ public class GameLogic : MonoBehaviour
             {
                 foreach(Agent agent in agents)
                 {
-                    
+                    // czy agent jest w polu razenia wierzy 
                     if (PointInsideCircle(new Vector2(agent.ActualAgentModel.transform.position.x, agent.ActualAgentModel.transform.position.z)
                                         , new Vector2(tower.model.transform.position.x, tower.model.transform.position.z), tower.range))
                     {
