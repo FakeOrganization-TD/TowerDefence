@@ -9,6 +9,7 @@ TagManager:
   - Camera
   - GeneratorTag
   - TargetTag
+  - BasicMissleTag
   layers:
   - Default
   - TransparentFX
