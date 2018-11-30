@@ -26,7 +26,7 @@ public class GameLogic : MonoBehaviour
     readonly Terrain[,] terrainMatrix;
 
     [SerializeField]
-    const float interval =0.5f; // odstepy pomiedzy agentami 
+     float interval =0.5f; // odstepy pomiedzy agentami 
 
     [SerializeField]
     static Vector2 mapStartPosition;
@@ -205,7 +205,7 @@ public class GameLogic : MonoBehaviour
 
             var Agent = gameObject.AddComponent<Agent>();
             Agent.Initalize(
-              Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, 100);
+              Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, Agent.AgentType.Normal); // 100 
             agents.Add(Agent);
            
 
@@ -216,13 +216,7 @@ public class GameLogic : MonoBehaviour
             }
         #endregion
 
-        //if (agents != null)
-        //foreach (Agent agent in agents)
-        //{
-                
-        //       // agent.Update();
 
-        //}
         ChooseTargetMob();
     }
 }

@@ -64,6 +64,7 @@ public class Agent : MonoBehaviour
         // isActive = true;
     }
 
+    // Narazie uzywany ale odradzany
     public void Initalize(GameObject model, Vector3 startPosition, int hp)
      {
 
@@ -78,6 +79,42 @@ public class Agent : MonoBehaviour
 
     }
 
+    public void Initalize(GameObject model, Vector3 startPosition, AgentType type)
+    {
+        this.position = startPosition;
+        size = Vector3.one;
+        exists = true;
+        pathIndex = waypoints.Count - 1;
+        ActualAgentModel = model;
+        switch (type)
+        {
+            case AgentType.Normal:
+                agentType = AgentType.Normal;
+                healthPoints = 100;
+                speed = 3f;
+                break;
+
+            case AgentType.Fast:
+                agentType = AgentType.Fast;
+                healthPoints = 40;
+                speed = 8f;
+                break;
+
+            case AgentType.Tank:
+                agentType = AgentType.Tank;
+                healthPoints = 160;
+                speed = 2.5f;
+                break;
+
+        }
+
+
+ActualAgentModel = model;
+        scale = 1;
+        pathIndex = waypoints.Count - 1;
+        exists = true;
+
+    }
 
 
 

@@ -124,7 +124,7 @@ using UnityEngine;
                 damage = 35;
                 range = 5f;
                 burstDamage = 0;
-                reload = 1f; // zmienic nazwe 
+                reload = 1f; 
                 missleType = Missle.MissleType.Basic;
                 break;
 

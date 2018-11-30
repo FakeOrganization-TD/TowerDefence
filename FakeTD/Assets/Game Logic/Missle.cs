@@ -50,6 +50,7 @@ public class Missle : MonoBehaviour
         destination = TargetAgent.ActualAgentModel.transform.position;
         MissleModel.transform.position = Vector3.MoveTowards(currentPosition, destination, step);
         currentPosition = MissleModel.transform.position;
+
         if(MissleModel.transform.position == destination)
         {
             TargetAgent.healthPoints -= damage;
