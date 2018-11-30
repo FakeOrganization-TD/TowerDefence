@@ -32,7 +32,7 @@ public class Agent : MonoBehaviour
     float scale;
 
     [SerializeField]
-    float speed;
+   public float speed;
 
     [SerializeField]
     Transform targetTransform;
@@ -70,7 +70,7 @@ public class Agent : MonoBehaviour
         this.position = startPosition;
         size = Vector3.one;
         this.healthPoints = hp;
-        speed = 6f; // PREDKOSC
+        speed = 3f; // PREDKOSC
         ActualAgentModel = model;
         scale = 1;
         pathIndex = waypoints.Count - 1;

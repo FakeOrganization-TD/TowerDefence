@@ -18,8 +18,10 @@ using UnityEngine;
         public float damage;
         public float range;
         public float burstDamage;
-        public float speed;
+        public float reload;
+        public float cooldown;
         public float rotation;
+     
                 //MOdel wierzy
         public GameObject model;
         public Agent target;
@@ -33,15 +35,21 @@ using UnityEngine;
         // strzelanie
         public void Shoot()
         {
+
+
         if (model == null||target==null)
             return;
-         missle = gameObject.AddComponent<Missle>();
-         missle.Initalize( 
-            Instantiate(GameObject.FindGameObjectWithTag("BasicMissleTag"),model.transform.position,Quaternion.identity), // klon sfery,ktora ma byc pociskiem
-            model, // model wierzy
-            target, // ref. do agenta
-            missleType); // typ pocisku 
-             
+        cooldown -= Time.deltaTime;
+        if (cooldown < 0)
+        {
+            missle = gameObject.AddComponent<Missle>();
+            missle.Initalize(
+               Instantiate(GameObject.FindGameObjectWithTag("BasicMissleTag"), model.transform.position, Quaternion.identity), // klon sfery,ktora ma byc pociskiem
+               model, // model wierzy
+               target, // ref. do agenta
+               missleType); // typ pocisku 
+            cooldown = reload;
+        }
         }
     // obracanie wierza
    public void Rotate()
@@ -77,28 +85,28 @@ using UnityEngine;
                     damage = 35;
                     range = 3;
                     burstDamage = 0;
-                    speed = 1;
+                    reload = 1;
                     break;
 
                 case TowerType.CannonTower:
                     damage = 65;
                     range = 5;
                     burstDamage = 20;
-                    speed = 0.5f;
+                    reload = 0.5f;
                     break;
 
                 case TowerType.Fast:
                     damage = 30;
                     range = 4;
                     burstDamage = 0;
-                    speed = 1.8f;
+                    reload = 1.8f;
                     break;
 
                 case TowerType.Sniper:
                     damage = 40;
                     range = 10;
                     burstDamage = 5;
-                    speed = 0.8f;
+                    reload = 0.8f;
                     break;
             }
 
@@ -116,7 +124,7 @@ using UnityEngine;
                 damage = 35;
                 range = 5f;
                 burstDamage = 0;
-                speed = 1;
+                reload = 1f; // zmienic nazwe 
                 missleType = Missle.MissleType.Basic;
                 break;
 
@@ -124,21 +132,21 @@ using UnityEngine;
                 damage = 65;
                 range = 5;
                 burstDamage = 20;
-                speed = 0.5f;
+                reload = 0.5f;
                 break;
 
             case TowerType.Fast:
                 damage = 30;
                 range = 4;
                 burstDamage = 0;
-                speed = 1.8f;
+                reload = 1.8f;
                 break;
 
             case TowerType.Sniper:
                 damage = 40;
                 range = 10;
                 burstDamage = 5;
-                speed = 0.8f;
+                reload = 0.8f;
                 break;
         }
     }
