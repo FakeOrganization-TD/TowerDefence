@@ -131,28 +131,36 @@ public class GameLogic : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        #region agentSpawner 
         if (!initalised)
             return;
+     
+        #region agentSpawner 
+        
 
         timeLeft -= Time.deltaTime;
+
+
+
+        if (wavesController.currentWave >= wavesController.wavesCount)
+        {
+            WaveTextManager.Message = "No waves left";
+            return; //todo koniec fal, wygranko
+        }
         if (wavesController.waves[wavesController.currentWave].Count == 0 &&
-            agents.Count ==0 &&
+            agents.Count == 0 &&
             wavesController.currentWave<wavesController.wavesCount)
         {
             wavesController.currentWave++;
             //todo kończy się aktualna fala. Zrobić przerwę czasową albo coś
         }
+       
         if (timeLeft < 0 && wavesController.waves[wavesController.currentWave].Count > 0)
         {
             GameObject enemy = GameObject.Find("FastMob");
 
-            if(wavesController.currentWave == wavesController.wavesCount)
-            {
-                return; //todo koniec fal, wygranko
-            }
+            
 
-
+            WaveTextManager.Message = "Wave " + (wavesController.currentWave + 1);
             var Agent = gameObject.AddComponent<Agent>();
             Agent.Initalize(
               Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y),

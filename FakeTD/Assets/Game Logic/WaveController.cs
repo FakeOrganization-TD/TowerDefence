@@ -4,20 +4,20 @@ using System.Text;
 using UnityEngine;
 
 class WaveController
-  {
-    public  bool randomWaveStyle = false;
+{
+    public bool randomWaveStyle = false;
     // kazdy element listy to jedna fala
     // na fale sklada sie x agentow okreslonego typu
-    public  List<List<Agent.AgentType>> waves;
-    public  int currentWave = 0;
-    public  Agent currentAgent;
-    public  float interval;
-    public float hpSum=300;
+    public List<List<Agent.AgentType>> waves;
+    public int currentWave = 0;
+    public Agent currentAgent;
+    public float interval;
+    public float hpSum = 300;
     public float hpWaveInterval = 50;
-    public int wavesCount=5;
+    public int wavesCount = 5;
 
 
-    public WaveController(bool randomWaveStyle=false)
+    public WaveController(bool randomWaveStyle = false)
     {
         this.randomWaveStyle = randomWaveStyle;
         waves = new List<List<Agent.AgentType>>();
@@ -30,35 +30,35 @@ class WaveController
             }
         }
     }
-   
+
     private void MakeAgents()
     {
         // ilos fal w sumie
         for (int i = 0; i < 5; i++)
         {
             var wave = MakeAgentsRandom();
-            
+
             for (int j = 0; j < 8; j++)
             {
 
             }
             waves.Add(wave);
-            
+
         }
     }
-    
+
     private List<Agent.AgentType> MakeAgentsRandom()
     {
         var wave = new List<Agent.AgentType>();
         int sumOfHP = 0;
-        while(sumOfHP <= hpSum)
+        while (sumOfHP <= hpSum)
         {
             var enemy = GetRandomEneny();
             sumOfHP += (int)enemy;
             wave.Add(enemy);
         }
         hpSum += hpWaveInterval;
-        wave = wave.OrderBy(enemy=>(int)enemy).ToList();
+        wave = wave.OrderBy(enemy => (int)enemy).ToList();
         return wave;
     }
 

@@ -223,6 +223,8 @@ public class Generator : MonoBehaviour
         float height = dirtPrefab.transform.lossyScale.y;
         float depth = dirtPrefab.transform.lossyScale.z;
 
+        int layer = 9;
+
         for (int i = _minX; i < _maxX; i++)
         {//columns (x values)
             for (int k = _minZ; k < _maxZ; k++)
@@ -238,36 +240,47 @@ public class Generator : MonoBehaviour
                                 {
                                     GameObject block = trashBinPrefab;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.BlackHole:
                                 {
                                     GameObject block = blackHolePrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.DestroyedTurret:
                                 {
                                     GameObject block = destroyedTurretprefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.Cristal:
                                 {
                                     GameObject block = cristalPrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.Path:
                                 {
                                     GameObject block = pathPrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             default:
                                 {
                                     GameObject block = normalTerrainPrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                         }
@@ -275,7 +288,9 @@ public class Generator : MonoBehaviour
                     else
                     {
                         GameObject block = normalTerrainPrefab;
+                        block.layer = layer;
                         Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                        block.layer = layer;
                     }
 
                 }

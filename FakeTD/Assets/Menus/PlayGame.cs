@@ -32,7 +32,7 @@ public class PlayGame : MonoBehaviour
         try
         {
           //  button.gameObject.SetActive(false);
-            Debug.Log("Jestem!");
+            //Debug.Log("Jestem!");
             terrainMatrix = gene.RunGenerationProcedure(out mapStartPosition,out mapEndPosition);
             gameLogic.pathTiles = new System.Collections.Generic.List<Vector2>(gene.pathTilesList);
           
