@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 179102874}
   - component: {fileID: 179102876}
   - component: {fileID: 179102875}
+  - component: {fileID: 179102877}
   m_Layer: 10
   m_Name: WaveText
   m_TagString: Untagged
@@ -308,6 +309,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 179102873}
   m_CullTransparentMesh: 0
+--- !u!114 &179102877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 179102873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df1c59584336323409b9f944d0a492f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &229735190
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,14 +493,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.25570893, y: -0.30474204, z: 0.7028203, w: 0.5897363}
+  m_LocalRotation: {x: 0.3978125, y: 0, z: 0, w: 0.91746676}
   m_LocalPosition: {x: -2.720726, y: -13.31192, z: 8.555368}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 628333892}
   m_Father: {fileID: 1407549833}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 46.883003, y: 0, z: 100}
+  m_LocalEulerAnglesHint: {x: 46.883003, y: 0, z: 0}
 --- !u!114 &534669906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,7 +581,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 534669904}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
