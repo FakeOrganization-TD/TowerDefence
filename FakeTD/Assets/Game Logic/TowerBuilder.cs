@@ -84,7 +84,7 @@ public  class TowerBuilder : MonoBehaviour
         if (Physics.Raycast(ray, out hit)) //check if the ray hit something
         {
             hitPosition = hit.point; //use this position for what you want to do
-            Debug.Log(hit.point);
+            //Debug.Log(hit.point);
         }
 
 

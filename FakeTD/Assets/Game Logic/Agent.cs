@@ -7,9 +7,9 @@ public class Agent : MonoBehaviour
 {
     public enum AgentType
     {
-        Normal,
-        Fast,
-        Tank
+        Normal = 100,
+        Fast= 40,
+        Tank = 160
     };
 
     public static AgentType agentType;
@@ -88,21 +88,21 @@ public class Agent : MonoBehaviour
         ActualAgentModel = model;
         switch (type)
         {
-            case AgentType.Normal:
+            case AgentType.Normal: 
                 agentType = AgentType.Normal;
-                healthPoints = 100;
+                healthPoints = (int)agentType;
                 speed = 3f;
                 break;
 
             case AgentType.Fast:
                 agentType = AgentType.Fast;
-                healthPoints = 40;
+                healthPoints = (int)agentType;
                 speed = 8f;
                 break;
 
             case AgentType.Tank:
                 agentType = AgentType.Tank;
-                healthPoints = 160;
+                healthPoints = (int)agentType;
                 speed = 2.5f;
                 break;
 
@@ -114,43 +114,6 @@ ActualAgentModel = model;
         pathIndex = waypoints.Count - 1;
         exists = true;
 
-    }
-
-
-
-    
-
-    public Agent(GameObject model, Vector3 startPosition, AgentType type) : base()
-    {
-
-        this.position = startPosition;
-        size = Vector3.one;
-        switch (type)
-        {
-            case AgentType.Normal:
-                healthPoints = 100;
-                speed = 5f;
-                break;
-
-            case AgentType.Fast:
-                healthPoints = 40;
-                speed = 8f;
-                break;
-
-            case AgentType.Tank:
-                healthPoints = 160;
-                speed = 2.5f;
-                break;
-
-        }
-
-
-        ActualAgentModel = model;
-        scale = 1;
-        pathIndex = waypoints.Count - 1;
-        exists = true;
-
-        // isActive = true;
     }
 
     public void Move()
@@ -171,7 +134,7 @@ ActualAgentModel = model;
 
         if (pathIndex > 0 && ActualAgentModel.transform.position ==destination)
         {
-            Debug.Log("pathIndex Value: "+pathIndex.ToString());
+            //Debug.Log("pathIndex Value: "+pathIndex.ToString());
             pathIndex--;
         }
         if( x == waypoints[0].x && y == waypoints[0].y)
@@ -180,10 +143,7 @@ ActualAgentModel = model;
             Destroy(ActualAgentModel);
             Destroy(this);
             exists = false;
-        }
-          
-       
-     
+        }   
             
     }
      
@@ -203,7 +163,7 @@ ActualAgentModel = model;
                 pathIndex = waypoints.Count - 1;
                 isActive = true;
             }
-            Debug.Log("Jestem przed move");
+            //Debug.Log("Jestem przed move");
             Move();
         }
          

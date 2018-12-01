@@ -15,18 +15,18 @@ public class pathField
         index = ind;
         terrain = ter;
     }
-}               
+}
 
 /// ////////////////////////////////////
 
 public class GameLogic : MonoBehaviour
 {
-    static int DebugTargetCounter=0;
+    static int DebugTargetCounter = 0;
     [SerializeField]
     readonly Terrain[,] terrainMatrix;
 
     [SerializeField]
-     float interval =0.5f; // odstepy pomiedzy agentami 
+    float interval = 0.5f; // odstepy pomiedzy agentami 
 
     [SerializeField]
     static Vector2 mapStartPosition;
@@ -44,23 +44,24 @@ public class GameLogic : MonoBehaviour
     int NumberOfMobs;
     float timeLeft = 1.0f;
     bool initalised = false;
+    private WaveController wavesController;
 
 
     // Use this for initialization
     void Start()
     {
-       // towers = new List<Tower>();
-       
+        // towers = new List<Tower>();
+
         NumberOfMobs = 0;
     }
 
 
     // Wyczyścić to niezbędnego minimum 
-    public void Initalize(Terrain[,] terrain,Vector2 startPoint,Vector2 endPoint)
+    public void Initalize(Terrain[,] terrain, Vector2 startPoint, Vector2 endPoint)
     {
         Agent.waypoints = new List<Vector2>(pathTiles);
         Agent.waypoints.Add(startPoint);
-        Agent.waypoints.Add(endPoint);        
+        Agent.waypoints.Add(endPoint);
         Agent.waypoints.Reverse();
 
         this.startPoint = endPoint;
@@ -70,11 +71,12 @@ public class GameLogic : MonoBehaviour
 
         //agent = new Agent(GameObject.Find("Enemy"))
         initalised = true;
+        wavesController = new WaveController(true);//todo ustawiać parametr z menu
 
-       
+
     }
 
-    public bool PointInsideSphere( Vector3 point, Vector3 center , float radius  )
+    public bool PointInsideSphere(Vector3 point, Vector3 center, float radius)
     {
         return Vector3.Distance(point, center) < radius;
     }
@@ -84,69 +86,6 @@ public class GameLogic : MonoBehaviour
         return Vector2.Distance(point, center) < radius;
     }
 
-
-    public void ChooseTargetMob_OLD()
-    {
-        #region ChooseTarget
-
-        if (towers.Count > 0)
-            foreach (Tower tower in towers)
-            {
-                if (tower.target == null)
-                {
-                    if (agents != null)
-                        foreach (Agent agent in agents)
-                        {
-                           
-                                    //if (PointInsideSphere(agent.transform.position, tower.position, tower.range))
-                                    //{
-                                    //    tower.target = agent;
-
-                                    //}
-
-                                    if (PointInsideCircle(new Vector2(agent.transform.position.x, agent.transform.position.z)
-                                        , new Vector2(tower.transform.position.x, tower.transform.position.z), tower.range))
-                                    {
-                                DebugTargetCounter++;
-                                        tower.target = agent;
-                                Debug.Log("Ustawilem Ce");
-                                Debug.Log("Laczna ilosc celow: ");
-                                Debug.Log(DebugTargetCounter);
-                                    }
-
-
-                           
-
-
-
-                        }
-                }
-                else if(tower.target !=null)
-                {
-
-                    
-                        tower.Rotate();
-                        if (!PointInsideCircle(new Vector2(tower.target.transform.position.x, tower.target.transform.position.z)
-                   , new Vector2(tower.transform.position.x, tower.transform.position.z), tower.range))
-                            {
-                                tower.target = null;
-                            }
-                        
-                        //    if (!PointInsideSphere(tower.target.transform.position, tower.position, tower.range))
-                        //{
-                        //    tower.target = null;
-                        //}
-
-
-
-                    
-
-                }
-
-            }
-        #endregion
-    }
-
     // Funkcja za pomoca ktorej wierze obieraja agentow na cel 
     public void ChooseTargetMob()
     {
@@ -154,12 +93,12 @@ public class GameLogic : MonoBehaviour
             return;
         if (agents.Count <= 0)
             return;
-        
-        foreach(Tower tower in towers)
+
+        foreach (Tower tower in towers)
         {
-            if(tower.target == null)
+            if (tower.target == null)
             {
-                foreach(Agent agent in agents)
+                foreach (Agent agent in agents)
                 {
                     // czy agent jest w polu razenia wierzy 
                     if (PointInsideCircle(new Vector2(agent.ActualAgentModel.transform.position.x, agent.ActualAgentModel.transform.position.z)
@@ -171,9 +110,9 @@ public class GameLogic : MonoBehaviour
 
                 }
             }
-            else if(tower.target != null)
+            else if (tower.target != null)
             {
-                if (!PointInsideCircle(new Vector2(tower.target.ActualAgentModel.transform.position.x, 
+                if (!PointInsideCircle(new Vector2(tower.target.ActualAgentModel.transform.position.x,
                     tower.target.ActualAgentModel.transform.position.z),
                     new Vector2(tower.model.transform.position.x, tower.model.transform.position.z), tower.range))
                 {
@@ -190,33 +129,53 @@ public class GameLogic : MonoBehaviour
     // To ma w teorii dać liste kafelek ścieżki (path) 
 
     // Update is called once per frame
-    public  void Update()
+    public void Update()
     {
         #region agentSpawner 
         if (!initalised)
             return;
 
-            timeLeft -= Time.deltaTime;
-            if (timeLeft < 0 && NumberOfMobs < maxNumberOfMobs)
-            {
-            
+        timeLeft -= Time.deltaTime;
+        if (wavesController.waves[wavesController.currentWave].Count == 0 &&
+            agents.Count ==0 &&
+            wavesController.currentWave<wavesController.wavesCount)
+        {
+            wavesController.currentWave++;
+            //todo kończy się aktualna fala. Zrobić przerwę czasową albo coś
+        }
+        if (timeLeft < 0 && wavesController.waves[wavesController.currentWave].Count > 0)
+        {
             GameObject enemy = GameObject.Find("FastMob");
+
+            if(wavesController.currentWave == wavesController.wavesCount)
+            {
+                return; //todo koniec fal, wygranko
+            }
 
 
             var Agent = gameObject.AddComponent<Agent>();
             Agent.Initalize(
-              Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y), Quaternion.identity), startPoint, Agent.AgentType.Normal); // 100 
+              Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y),
+              Quaternion.identity),
+              startPoint,
+              wavesController.waves[wavesController.currentWave][0]);
+
             agents.Add(Agent);
-           
+            if (wavesController.waves[wavesController.currentWave].Count > 0)
+                wavesController.waves[wavesController.currentWave].RemoveAt(0);
 
             NumberOfMobs++;
 
             timeLeft = interval;
 
-            }
+        }
         #endregion
 
+        Debug.Log("Current wave "+wavesController.currentWave);
+        Debug.Log("Count in wave" + wavesController.waves[wavesController.currentWave].Count);
 
         ChooseTargetMob();
+        //Debug.Log("Enemys in list " + agents.Count);
+
     }
 }
