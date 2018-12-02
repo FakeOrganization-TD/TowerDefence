@@ -22,6 +22,7 @@ public class Agent : MonoBehaviour
     private int pathIndex = -5;
     public bool isActive;
     public float cashIncome;
+    public float damage;
     [SerializeField]
   public  GameObject ActualAgentModel;
 
@@ -93,6 +94,7 @@ public class Agent : MonoBehaviour
                 healthPoints = (int)agentType;
                 speed = 3f;
                 cashIncome = 4;
+                damage = 5;
                 break;
 
             case AgentType.Fast:
@@ -100,12 +102,14 @@ public class Agent : MonoBehaviour
                 healthPoints = (int)agentType;
                 speed = 8f;
                 cashIncome = 2.5f;
+                damage = 2.5f;
                 break;
 
             case AgentType.Tank:
                 agentType = AgentType.Tank;
                 healthPoints = (int)agentType;
                 speed = 2.5f;
+                damage = 10;
                 cashIncome = 6;
                 break;
 
@@ -142,6 +146,7 @@ public class Agent : MonoBehaviour
         }
         if( x == waypoints[0].x && y == waypoints[0].y)
         {
+            MoneyAndScores.hpNexus -= this.damage;
             GameLogic.agents.Remove(this);
             Destroy(ActualAgentModel);
             Destroy(this);

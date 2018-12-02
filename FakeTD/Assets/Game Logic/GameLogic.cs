@@ -136,10 +136,20 @@ public class GameLogic : MonoBehaviour
      
         #region agentSpawner 
         
+        if(MoneyAndScores.hpNexus<=0)
+        {
+            TextManager.cashErrorMessage = " Przegrales gre";
+            wavesController.wavesCount = 0;
+            Destroy(this);  
+
+        }
+
+        // To do Score
 
         timeLeft -= Time.deltaTime;
 
         TextManager.cashInfoMessage = MoneyAndScores.money.ToString();
+        TextManager.hpInfoMessage = MoneyAndScores.hpNexus.ToString();
 
         if (wavesController.currentWave >= wavesController.wavesCount)
         {
@@ -153,7 +163,7 @@ public class GameLogic : MonoBehaviour
             wavesController.currentWave++;
             //todo kończy się aktualna fala. Zrobić przerwę czasową albo coś
         }
-       
+       // sypie nullami 
         if (timeLeft < 0 && wavesController.waves[wavesController.currentWave].Count > 0)
         {
             GameObject enemy = GameObject.Find("FastMob");

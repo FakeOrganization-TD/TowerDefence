@@ -8,5 +8,6 @@ using Unity;
     {
         public static float money = 50f;
         public static float score = 0f;
+        public static float hpNexus = 100f;
     }
 
