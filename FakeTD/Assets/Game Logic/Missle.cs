@@ -40,7 +40,7 @@ public class Missle : MonoBehaviour
         float step = Time.deltaTime * speed;
 
         // Warunek konieczny, poniewaz agenci sa niszczeni po dotarciu do konca mapy. Bez tego sypie NullReference
-        if (TargetAgent == null|| TargetAgent.ActualAgentModel ==null)
+        if (TargetAgent == null|| TargetAgent.ActualAgentModel == null)
         {
             Destroy(MissleModel);
             Destroy(this);

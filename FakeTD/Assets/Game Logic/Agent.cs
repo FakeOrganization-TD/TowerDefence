@@ -21,7 +21,7 @@ public class Agent : MonoBehaviour
     Vector3 position, oldPosition;
     private int pathIndex = -5;
     public bool isActive;
-
+    public float cashIncome;
     [SerializeField]
   public  GameObject ActualAgentModel;
 
@@ -92,24 +92,27 @@ public class Agent : MonoBehaviour
                 agentType = AgentType.Normal;
                 healthPoints = (int)agentType;
                 speed = 3f;
+                cashIncome = 2;
                 break;
 
             case AgentType.Fast:
                 agentType = AgentType.Fast;
                 healthPoints = (int)agentType;
                 speed = 8f;
+                cashIncome = 1;
                 break;
 
             case AgentType.Tank:
                 agentType = AgentType.Tank;
                 healthPoints = (int)agentType;
                 speed = 2.5f;
+                cashIncome = 5;
                 break;
 
         }
 
 
-ActualAgentModel = model;
+       ActualAgentModel = model;
         scale = 1;
         pathIndex = waypoints.Count - 1;
         exists = true;
@@ -169,6 +172,7 @@ ActualAgentModel = model;
          
         if(healthPoints <=0 )
         {
+            MoneyAndScores.money += this.cashIncome;
             GameLogic.agents.Remove(this);
             Destroy(ActualAgentModel);
             Destroy(this);

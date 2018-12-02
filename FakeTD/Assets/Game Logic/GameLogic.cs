@@ -68,7 +68,7 @@ public class GameLogic : MonoBehaviour
 
         TowerBuilder.terrainMatrix = terrain;
 
-
+        MoneyAndScores.money = 50f;
         //agent = new Agent(GameObject.Find("Enemy"))
         initalised = true;
         wavesController = new WaveController(true);//todo ustawiać parametr z menu
@@ -139,7 +139,7 @@ public class GameLogic : MonoBehaviour
 
         timeLeft -= Time.deltaTime;
 
-
+        TextManager.cashInfoMessage = MoneyAndScores.money.ToString();
 
         if (wavesController.currentWave >= wavesController.wavesCount)
         {

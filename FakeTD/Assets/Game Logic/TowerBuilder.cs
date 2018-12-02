@@ -9,10 +9,10 @@ public  class TowerBuilder : MonoBehaviour
 
     public  enum ChosenTower
     {
-        Basic,
-        CannonTower,
-        Sniper,
-        Fast,
+        Basic=15,
+        CannonTower=10,
+        Sniper= 30,
+        Fast= 20,
         None
     }
     
@@ -46,7 +46,8 @@ public  class TowerBuilder : MonoBehaviour
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         TowerChoser.isSelected = true;
         TowerChoser.ChosenTower=(ChosenTower)Enum.Parse(typeof(ChosenTower), strChosenTower, true);
-      
+        string towerTag;
+        
         switch (TowerChoser.ChosenTower)
         {
             case ChosenTower.Basic:
@@ -74,12 +75,14 @@ public  class TowerBuilder : MonoBehaviour
 
     public void AttachTowerToTerrain()
     {
+      
+        
         // RaycastHit hit;
         Vector3 hitPosition = Vector3.zero;
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Tower tower;
-
+        // TUTAJ WARNKI KASY
         // Achtung Bitte 
         if (Physics.Raycast(ray, out hit)) //check if the ray hit something
         {
@@ -92,7 +95,9 @@ public  class TowerBuilder : MonoBehaviour
         {
             // hitPosition.x += 0.5f;
             //  hitPosition.z -= 0.5f;
-
+            if (MoneyAndScores.money < (float) TowerChoser.ChosenTower)
+                return;
+            
             for (int i = 0; i < terrainMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < terrainMatrix.GetLength(1); j++)
@@ -114,6 +119,8 @@ public  class TowerBuilder : MonoBehaviour
                         // tower = new Tower(chosenTowerModel, chosenTowerModel.transform.position,
                         //Tower.TowerType.Basic);
                         GameLogic.towers.Add(tower);
+                        MoneyAndScores.money -= (float) TowerChoser.ChosenTower;
+                        
                       //  GameLogic.towers.Add(new Tower(chosenTowerModel, chosenTowerModel.transform.position,
                     //   Tower.TowerType.Basic));    // (Tower.TowerType) Enum.Parse(typeof(Tower.TowerType), TowerChoser.ChosenTower.ToString())));
                     }
@@ -144,6 +151,7 @@ public  class TowerBuilder : MonoBehaviour
                 case ChosenTower.Basic:
                     if (TowerChoser.isSelected)
                     {
+                      
                         //   chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag("BasicTowerTag"));
                         TowerChoser.isSelected = false;
                     }
@@ -176,6 +184,6 @@ public  class TowerBuilder : MonoBehaviour
    void Update ()
     {
         AttachTowerToTerrain();
-        ChooseTowerFromUI();
+  //      ChooseTowerFromUI();
 	}
 }
