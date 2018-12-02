@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BasicTowerButtonTag
+  - BasicTowerTag
+  - Camera
+  - GeneratorTag
+  - TargetTag
+  - BasicMissleTag
   layers:
   - Default
   - TransparentFX
@@ -14,8 +20,8 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
-  - 
+  - Map
+  - UIIcons
   - 
   - 
   - 
@@ -40,4 +46,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UIIcons
+    uniqueID: 3460240357
+    locked: 0
+  - name: Map
+    uniqueID: 4173951449
     locked: 0

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 public class Generator : MonoBehaviour
 {
     public GameObject dirtPrefab;
@@ -10,19 +10,20 @@ public class Generator : MonoBehaviour
     public GameObject destroyedTurretprefab;
     public GameObject pathPrefab;
     public float obstaclePropabilityPercent;
-
+    public List<Vector2> pathTilesList;
     public bool TrimTheMap;
-    
 
+   public static Terrain[,] GeneratedMap;
 
     PerlinNoise noise;
-    int _minX = 0;
-    int _maxX = 64;
-    int _minZ = 0;
-    int _maxZ = 64;
-    int _minY = 0;
-    int _maxY = 15;//Max height of mountains15
-
+  public  int _minX = 0;
+  public  int _maxX = 16;
+  public  int _minZ = 0;
+  public  int _maxZ = 16;
+  public  int _minY = 0;
+  public  int _maxY = 5;     //Max height of mountains15
+    public int rows;
+    public int cols;
 
     void Start()
     {
@@ -31,17 +32,18 @@ public class Generator : MonoBehaviour
         //Regenerate();
     }
 
-    public Terrain[,] RunGenerationProcedure(Vector2? startPosition, Vector2? endPosition)
+    public Terrain[,] RunGenerationProcedure(out Vector2 startPosition,out Vector2 endPosition)
     {
         noise = new PerlinNoise(Random.Range(1000000, 10000000));
         var terrainMatrix = GenerateMapMatrix(obstaclePropabilityPercent,out startPosition,out endPosition);
         GenerateMapFromMatrix(terrainMatrix);
+        GeneratedMap = terrainMatrix;
         return terrainMatrix;
         
     }
     
 
-    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent, out Vector2? startPosition, out Vector2? endPosition) // nie więcej niż 40 %
+    private Terrain[,] GenerateMapMatrix(float obstaclePropabilityPercent, out Vector2 startPosition, out Vector2 endPosition) // nie więcej niż 40 %
     {
         Terrain[,] map = new Terrain[_maxX, _maxZ];
         bool needToRegenerate = false;
@@ -75,7 +77,7 @@ public class Generator : MonoBehaviour
             try
             {
                 map = pathFinder.SearchPath(start, end);//generateFakePath(map);//todo podmienić
-                                                        //  map = generateFakePath(map);
+                pathTilesList = new List<Vector2>(pathFinder.pathTiles);                                    //  map = generateFakePath(map);
 
             }
             catch
@@ -89,10 +91,13 @@ public class Generator : MonoBehaviour
         {
             map = trimTheMap(map);
         }
-
+        rows = map.GetLength(0);
+        cols = map.GetLength(1);
        
         return map;
     }
+
+
 
     private Terrain[,] trimTheMap(Terrain[,] map)
     {
@@ -218,6 +223,8 @@ public class Generator : MonoBehaviour
         float height = dirtPrefab.transform.lossyScale.y;
         float depth = dirtPrefab.transform.lossyScale.z;
 
+        int layer = 9;
+
         for (int i = _minX; i < _maxX; i++)
         {//columns (x values)
             for (int k = _minZ; k < _maxZ; k++)
@@ -233,36 +240,47 @@ public class Generator : MonoBehaviour
                                 {
                                     GameObject block = trashBinPrefab;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.BlackHole:
                                 {
                                     GameObject block = blackHolePrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.DestroyedTurret:
                                 {
                                     GameObject block = destroyedTurretprefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.Cristal:
                                 {
                                     GameObject block = cristalPrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             case TerrainType.Path:
                                 {
                                     GameObject block = pathPrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                             default:
                                 {
                                     GameObject block = normalTerrainPrefab;
+                                    block.layer = layer;
                                     Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                                    block.layer = layer;
                                 }
                                 break;
                         }
@@ -270,7 +288,9 @@ public class Generator : MonoBehaviour
                     else
                     {
                         GameObject block = normalTerrainPrefab;
+                        block.layer = layer;
                         Instantiate(block, new Vector3(i * width, j * height, k * depth), Quaternion.identity);
+                        block.layer = layer;
                     }
 
                 }

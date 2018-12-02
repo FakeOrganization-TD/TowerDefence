@@ -1,95 +1,179 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Agent : MonoBehaviour
 {
-   public enum AgentType
+    public enum AgentType
     {
-        Normal,
-        Fast,
-        Tank
+        Normal = 100,
+        Fast= 40,
+        Tank = 160
     };
 
     public static AgentType agentType;
 
-    //static public List<Vector3> waypoints;
 
-    static public List<pathField> waypoints;
+
+    public static List<Vector2> waypoints;
     Terrain[,] terrainMatrix;
-    Vector3 position,oldPosition;
+    Vector3 position, oldPosition;
+    private int pathIndex = -5;
+    public bool isActive;
 
     [SerializeField]
-    public static GameObject normalAgentModel;
-
-    [SerializeField]
-    public static GameObject fastAgentModel;
-
-    [SerializeField]
-    public static GameObject tankAgentModel;
+  public  GameObject ActualAgentModel;
 
     [SerializeField]
     Vector3 size;
 
     [SerializeField]
-    float scale=1;
+    float scale;
 
     [SerializeField]
-    Vector3 speed;
+   public float speed;
 
     [SerializeField]
     Transform targetTransform;
 
     [SerializeField]
-    int healthPoints;
+  public  int healthPoints;
+
+    bool exists;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-	    	
-	}
+        isActive = false;
+    }
 
-    
-    public Agent(GameObject model, Vector3 startPosition, int hp)
+
+    public Agent(GameObject model, Vector3 startPosition, int hp) : base()
     {
+
         this.position = startPosition;
         size = Vector3.one;
         this.healthPoints = hp;
-        speed = Vector3.one;
+        speed = 5;
+        ActualAgentModel = model;
+        scale = 1;
+        pathIndex = waypoints.Count - 1;
+        exists = true;
+
+        // isActive = true;
+    }
+
+    // Narazie uzywany ale odradzany
+    public void Initalize(GameObject model, Vector3 startPosition, int hp)
+     {
+
+        this.position = startPosition;
+        size = Vector3.one;
+        this.healthPoints = hp;
+        speed = 3f; // PREDKOSC
+        ActualAgentModel = model;
+        scale = 1;
+        pathIndex = waypoints.Count - 1;
+        exists = true;
+
+    }
+
+    public void Initalize(GameObject model, Vector3 startPosition, AgentType type)
+    {
+        this.position = startPosition;
+        size = Vector3.one;
+        exists = true;
+        pathIndex = waypoints.Count - 1;
+        ActualAgentModel = model;
+        switch (type)
+        {
+            case AgentType.Normal: 
+                agentType = AgentType.Normal;
+                healthPoints = (int)agentType;
+                speed = 3f;
+                break;
+
+            case AgentType.Fast:
+                agentType = AgentType.Fast;
+                healthPoints = (int)agentType;
+                speed = 8f;
+                break;
+
+            case AgentType.Tank:
+                agentType = AgentType.Tank;
+                healthPoints = (int)agentType;
+                speed = 2.5f;
+                break;
+
+        }
+
+
+ActualAgentModel = model;
+        scale = 1;
+        pathIndex = waypoints.Count - 1;
+        exists = true;
 
     }
 
     public void Move()
     {
-        
-    }
+        if (pathIndex < 0 || !exists)
+            return;
 
-   public static Agent GetAgent(GameObject model, Vector3 startPosition,AgentType type)
-    {
+        float step = Time.deltaTime * speed;
+            var x = waypoints[pathIndex].x;
+            var y = waypoints[pathIndex].y;
+            var z = Generator.GeneratedMap[(int) x, (int) y].Height;
+        //ActualAgentModel.transform.position = new Vector3(x, z, y);
+        Vector3 origin = ActualAgentModel.transform.position;
+        Vector3 destination = new Vector3(x, z, y);
+        //  Vector3 move = Vector3.MoveTowards(origin, destination, 1f);
+        //   ActualAgentModel.transform.Translate(move * Time.deltaTime, Space.World);
+        ActualAgentModel.transform.position = Vector3.MoveTowards(origin, destination, step);
 
-        switch (type)
+        if (pathIndex > 0 && ActualAgentModel.transform.position ==destination)
         {
-            case AgentType.Normal:
-                return new Agent(normalAgentModel, startPosition, 100);
-
-            case AgentType.Fast:
-                return new Agent(fastAgentModel, startPosition, 40);
-
-            case AgentType.Tank:
-                return new Agent(tankAgentModel, startPosition, 150);
-
-            default: return null; // A się ktoś zdziwi HEHE pozdro dla kumatych
-
+            //Debug.Log("pathIndex Value: "+pathIndex.ToString());
+            pathIndex--;
         }
+        if( x == waypoints[0].x && y == waypoints[0].y)
+        {
+            GameLogic.agents.Remove(this);
+            Destroy(ActualAgentModel);
+            Destroy(this);
+            exists = false;
+        }   
+            
     }
+     
 
-    void Destroy()
-    {
-        
-    }
+
+    //void Destroy()
+    //{
+       
+    //}
     // Update is called once per frame
-    void Update ()
+   public void Update ()
     {
-		
+        if(waypoints !=null )
+        {
+            if(isActive ==false)
+            {
+                pathIndex = waypoints.Count - 1;
+                isActive = true;
+            }
+            //Debug.Log("Jestem przed move");
+            Move();
+        }
+         
+        if(healthPoints <=0 )
+        {
+            GameLogic.agents.Remove(this);
+            Destroy(ActualAgentModel);
+            Destroy(this);
+            exists = false;
+        }
+   
 	}
 }

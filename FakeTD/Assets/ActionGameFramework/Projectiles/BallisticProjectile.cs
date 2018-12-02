@@ -175,7 +175,7 @@ namespace ActionGameFramework.Projectiles
 			if (Mathf.Abs(firingAngle) >= 90f)
 			{
 				firingAngle = Mathf.Sign(firingAngle) * 89.5f;
-				Debug.LogWarning("Clamping angle to under +- 90 degrees to avoid errors.");
+				//Debug.LogWarning("Clamping angle to under +- 90 degrees to avoid errors.");
 			}
 		}
 #endif
