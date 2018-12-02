@@ -27,7 +27,7 @@ public class Missle : MonoBehaviour
             case MissleType.Basic:
                 damage = 15;
                // MissleModel.transform.localScale
-                speed = TargetAgent.speed/8 +5f; // szybkosc ataku: szybkosc agenta + offset 
+                speed = 12f ; // szybkosc ataku: szybkosc agenta + offset 
                 break;
         }
 

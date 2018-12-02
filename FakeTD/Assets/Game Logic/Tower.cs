@@ -89,7 +89,7 @@ public class Tower : MonoBehaviour
                 damage = 35;
                 range = 3;
                 burstDamage = 0;
-                reload = 1;
+                reload = 0.8f;
                 cost = 15;
                 break;
 
@@ -138,7 +138,7 @@ public class Tower : MonoBehaviour
                 break;
 
             case TowerType.CannonTower:
-                damage = 65;
+                damage = 100;
                 type = TowerBuilder.ChosenTower.CannonTower;
                 range = 5;
                 burstDamage = 20;
