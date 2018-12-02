@@ -32,7 +32,8 @@ public enum TerrainType
     TrashBin,
     BlackHole,
     Cristal,
-    DestroyedTurret
+    DestroyedTurret,
+    Turrent
 }
 public enum Direction
 {

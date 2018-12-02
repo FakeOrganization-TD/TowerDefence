@@ -28,7 +28,7 @@ public  class TowerBuilder : MonoBehaviour
     static GameObject chosenTowerModel ;
     public GameObject MainCamera;
     public static Terrain[,] terrainMatrix;
-   
+    string towerTag = "";
     // ChosenTower chosenTower;
 
     //public TowerBuilder(GameObject basic, GameObject cannonTower, GameObject sniper, GameObject fast, ChosenTower chosenTower)
@@ -46,13 +46,13 @@ public  class TowerBuilder : MonoBehaviour
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         TowerChoser.isSelected = true;
         TowerChoser.ChosenTower=(ChosenTower)Enum.Parse(typeof(ChosenTower), strChosenTower, true);
-        string towerTag;
+        
         
         switch (TowerChoser.ChosenTower)
         {
             case ChosenTower.Basic:
                 Debug.Log("IT CANONS !");
-               
+                towerTag="BasicTowerTag";
 
                 break;
 
@@ -91,7 +91,7 @@ public  class TowerBuilder : MonoBehaviour
         }
 
 
-        if (Input.GetMouseButtonDown(0) && TowerChoser.ChosenTower != ChosenTower.None)
+        if (Input.GetMouseButtonDown(0) && TowerChoser.ChosenTower != ChosenTower.None && towerTag!="")
         {
             // hitPosition.x += 0.5f;
             //  hitPosition.z -= 0.5f;
@@ -105,14 +105,17 @@ public  class TowerBuilder : MonoBehaviour
                     Rect current = new Rect(i, j, 1, 1);
                     if (terrainMatrix[i, j].TerrainType == TerrainType.Normal && current.Contains(new Vector2(hitPosition.x + 0.5f, hitPosition.z + 0.5f)))
                     {
+                        ////////////////////////////////////////////////
 
+                       /////////////////////////////////////////////////
                         hitPosition.y = terrainMatrix[i, j].Height;  // ew. dodać ++
-                        chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag("BasicTowerTag"));
+                        chosenTowerModel = Instantiate(GameObject.FindGameObjectWithTag(towerTag));
                         chosenTowerModel.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
                         chosenTowerModel.transform.position = new Vector3(
                             i,
                             terrainMatrix[i, j].Height,
                             j - 0.5f);
+
                         tower = gameObject.AddComponent<Tower>();
                         tower.Initialize(chosenTowerModel, chosenTowerModel.transform.position,
                         Tower.TowerType.Basic);
@@ -120,7 +123,8 @@ public  class TowerBuilder : MonoBehaviour
                         //Tower.TowerType.Basic);
                         GameLogic.towers.Add(tower);
                         MoneyAndScores.money -= (float) TowerChoser.ChosenTower;
-                        
+                        terrainMatrix[i, j].TerrainType = TerrainType.Turrent;
+                     //   towerTag = "";
                       //  GameLogic.towers.Add(new Tower(chosenTowerModel, chosenTowerModel.transform.position,
                     //   Tower.TowerType.Basic));    // (Tower.TowerType) Enum.Parse(typeof(Tower.TowerType), TowerChoser.ChosenTower.ToString())));
                     }

@@ -130,7 +130,7 @@ public class Tower : MonoBehaviour
         {
             case TowerType.Basic:
                 type = TowerBuilder.ChosenTower.Basic;
-                damage = 35;
+                damage = 50;
                 range = 3;
                 burstDamage = 0;
                 reload = 1;

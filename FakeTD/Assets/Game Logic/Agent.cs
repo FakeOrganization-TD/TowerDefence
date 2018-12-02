@@ -92,21 +92,21 @@ public class Agent : MonoBehaviour
                 agentType = AgentType.Normal;
                 healthPoints = (int)agentType;
                 speed = 3f;
-                cashIncome = 2;
+                cashIncome = 4;
                 break;
 
             case AgentType.Fast:
                 agentType = AgentType.Fast;
                 healthPoints = (int)agentType;
                 speed = 8f;
-                cashIncome = 1;
+                cashIncome = 2.5f;
                 break;
 
             case AgentType.Tank:
                 agentType = AgentType.Tank;
                 healthPoints = (int)agentType;
                 speed = 2.5f;
-                cashIncome = 5;
+                cashIncome = 6;
                 break;
 
         }
