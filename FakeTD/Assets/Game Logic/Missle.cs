@@ -15,21 +15,23 @@ public class Missle : MonoBehaviour
     Vector3 origin;
     Vector3 currentPosition;
     Vector3 destination;
-    public void Initalize(GameObject model,GameObject Mothertower,Agent Target, MissleType type)
+    public void Initalize(GameObject model,GameObject Mothertower,Agent Target, MissleType type,int damage,int speed)
     {
         this.TargetAgent = Target;
         this.MissleModel = model;
         this.Mothertower = Mothertower;
         origin = Mothertower.transform.position;
         currentPosition = origin;
-        switch (type)
-        {
-            case MissleType.Basic:
-                damage = 15;
-               // MissleModel.transform.localScale
-                speed = 12f ; // szybkosc ataku: szybkosc agenta + offset 
-                break;
-        }
+        this.damage = damage;
+        this.speed = speed;
+        //switch (type)
+        //{
+        //    case MissleType.Basic:
+        //        damage = 15;
+        //       // MissleModel.transform.localScale
+        //        speed = 12f ; // szybkosc ataku: szybkosc agenta + offset 
+        //        break;
+        //}
 
       
     }

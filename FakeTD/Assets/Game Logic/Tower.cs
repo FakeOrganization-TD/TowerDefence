@@ -49,7 +49,7 @@ public class Tower : MonoBehaviour
                Instantiate(GameObject.FindGameObjectWithTag("BasicMissleTag"), model.transform.position, Quaternion.identity), // klon sfery,ktora ma byc pociskiem
                model, // model wierzy
                target, // ref. do agenta
-               missleType); // typ pocisku 
+               missleType,(int)damage,12); // typ pocisku 
             cooldown = reload;
         }
     }
@@ -61,19 +61,29 @@ public class Tower : MonoBehaviour
             float numerator, denominator, height, sinus;
             height = target.ActualAgentModel.transform.position.y - model.transform.position.y;
             numerator = target.ActualAgentModel.transform.position.x - model.transform.position.x;
-
+          
             denominator = (float) Math.Sqrt(Math.Pow(height, 2) + Math.Pow(numerator, 2));
             sinus = numerator / denominator;
             angle = (float) Math.Sin(sinus);
 
 
 
-            //  model.transform.Rotate(0, angle * ( 100 ), 0);
-            model.transform.LookAt(new Vector3
-                (target.ActualAgentModel.transform.position.x,
-                0,
-                0));
-                //target.ActualAgentModel.transform.position.z));
+            ////  model.transform.Rotate(0, angle * ( 100 ), 0);
+            //if (czyUj)
+            //    angle *= -1;
+            ////model.transform.Rotate(new Vector3(0, 1, 0), angle);
+            ////model.transform.LookAt(target.ActualAgentModel.transform);
+            ////model.transform.rotation = Quaternion.Euler(0, model.transform.rotation.y, 0);
+
+            //var lookPos = target.transform.position - model.transform.position;
+            //lookPos.y = 0;
+            //var rotation = Quaternion.LookRotation(-lookPos);
+            //model.transform.rotation = Quaternion.Slerp(model.transform.rotation, rotation, Time.deltaTime * 1);
+            model.transform.LookAt(new Vector3(
+                target.ActualAgentModel.transform.position.x,
+                target.ActualAgentModel.transform.position.y,
+                target.ActualAgentModel.transform.position.z));
+            //target.ActualAgentModel.transform.position.z));
 
 
         }
@@ -91,7 +101,7 @@ public class Tower : MonoBehaviour
         {
             case TowerType.Basic:
                 type = TowerBuilder.ChosenTower.Basic;
-                damage = 70;
+                damage = 50;
                 range = 3;
                 burstDamage = 0;
                 reload = 1.2f;

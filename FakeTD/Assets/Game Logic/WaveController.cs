@@ -13,8 +13,8 @@ class WaveController
     public Agent currentAgent;
     public float interval;
     public float hpSum = 300;
-    public float hpWaveInterval = 50;
-    public int wavesCount = 5;
+    public float hpWaveInterval = 100;
+    public int wavesCount = 10;
 
 
     public WaveController(bool randomWaveStyle = false)
