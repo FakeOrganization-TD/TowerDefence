@@ -72,53 +72,14 @@ public class Tower : MonoBehaviour
             model.transform.LookAt(new Vector3
                 (target.ActualAgentModel.transform.position.x,
                 0,
-                target.ActualAgentModel.transform.position.z));
+                0));
+                //target.ActualAgentModel.transform.position.z));
 
 
         }
     }
 
-    public Tower(GameObject model, Vector3 Position, TowerType towerType) : base()
-    {
-        this.model = model;
-        //  this.position =Position;
-        target = null;
-        switch (towerType)
-        {
-            case TowerType.Basic:
-                damage = 35;
-                range = 3;
-                burstDamage = 0;
-                reload = 0.8f;
-                cost = 15;
-                break;
-
-            case TowerType.CannonTower:
-                damage = 65;
-                range = 5;
-                burstDamage = 20;
-                reload = 0.5f;
-                cost = 10;
-                break;
-
-            case TowerType.Fast:
-                damage = 30;
-                range = 4;
-                burstDamage = 0;
-                reload = 1.8f;
-                cost = 30;
-                break;
-
-            case TowerType.Sniper:
-                damage = 40;
-                range = 10;
-                burstDamage = 5;
-                reload = 0.8f;
-                cost = 20;
-                break;
-        }
-
-    }
+   
 
     public void Initialize(GameObject model, Vector3 Position, TowerType towerType)
     {
@@ -130,10 +91,10 @@ public class Tower : MonoBehaviour
         {
             case TowerType.Basic:
                 type = TowerBuilder.ChosenTower.Basic;
-                damage = 50;
+                damage = 70;
                 range = 3;
                 burstDamage = 0;
-                reload = 1;
+                reload = 1.2f;
                 cost = (int) type;
                 break;
 

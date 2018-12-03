@@ -135,7 +135,7 @@ public class CameraController : MonoBehaviour
             Target.transform.Translate(10 * Time.deltaTime, 0, 0);
         }
         //camera rotation with middle mouse
-        if (Input.GetMouseButton(2))
+      /*  if (Input.GetMouseButton(2))
         {
             if (Input.GetAxis("Mouse X") > 0)
             {
@@ -159,6 +159,7 @@ public class CameraController : MonoBehaviour
             camt.Rotate(0, -25 * Time.deltaTime, 0);
             camt.LookAt(transform.position);
         }
+        */
         // Mouse wheel zoom 
         //if (Input.GetAxis("Mouse ScrollWheel") < 0 && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         //{

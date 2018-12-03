@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bdaec7962f8c4bd49b068910d97ea724
+guid: 08fd52ed76580524ca8c386ea322737d
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -9,8 +9,8 @@ ModelImporter:
     400000: Sphere
     400002: Sphere_001
     400004: //RootNode
-    2100000: Material_001__Towercolor_png
-    2100002: Material_000__Towercolor_png_001
+    2100000: Material_001__Tower2Color
+    2100002: Material_000__Tower2Color_001
     2300000: Sphere
     2300002: Sphere_001
     3300000: Sphere

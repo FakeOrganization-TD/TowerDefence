@@ -1,22 +1,28 @@
 fileFormatVersion: 2
-guid: bdaec7962f8c4bd49b068910d97ea724
+guid: 8b5f471ca298895428519f144d7cf6b0
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: Sphere
     100002: Sphere_001
-    100004: //RootNode
+    100004: Sphere_002
+    100006: //RootNode
     400000: Sphere
     400002: Sphere_001
-    400004: //RootNode
-    2100000: Material_001__Towercolor_png
-    2100002: Material_000__Towercolor_png_001
+    400004: Sphere_002
+    400006: //RootNode
+    2100000: Material_001__Tower3Color
+    2100002: Material_000__Tower3Color_001
+    2100004: Material_002__Tower3Color_002
     2300000: Sphere
     2300002: Sphere_001
+    2300004: Sphere_002
     3300000: Sphere
     3300002: Sphere_001
+    3300004: Sphere_002
     4300000: Sphere
     4300002: Sphere_001
+    4300004: Sphere_002
     7400000: Default Take
     9500000: //RootNode
   externalObjects: {}
