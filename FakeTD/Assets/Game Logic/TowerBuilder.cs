@@ -60,6 +60,7 @@ public  class TowerBuilder : MonoBehaviour
                 break;
 
             case ChosenTower.Fast:
+                towerTag = "FastTowerTag";
                 break;
 
             case ChosenTower.Sniper:
@@ -75,8 +76,7 @@ public  class TowerBuilder : MonoBehaviour
 
     public void AttachTowerToTerrain()
     {
-      
-        
+     
         // RaycastHit hit;
         Vector3 hitPosition = Vector3.zero;
         RaycastHit hit;
@@ -119,7 +119,8 @@ public  class TowerBuilder : MonoBehaviour
 
                         tower = gameObject.AddComponent<Tower>();
                         tower.Initialize(chosenTowerModel, chosenTowerModel.transform.position,
-                        Tower.TowerType.Basic);
+                 //   Tower.TowerType.Basic);
+                      TowerChoser.ChosenTower);
                         // tower = new Tower(chosenTowerModel, chosenTowerModel.transform.position,
                         //Tower.TowerType.Basic);
                         GameLogic.towers.Add(tower);

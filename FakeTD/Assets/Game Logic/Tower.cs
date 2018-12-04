@@ -10,6 +10,7 @@ public class Tower : MonoBehaviour
         Sniper,
         Fast
     }
+
     TowerBuilder.ChosenTower type;
     // public bool isPlaced=false;
     public float angle = 0;
@@ -20,6 +21,12 @@ public class Tower : MonoBehaviour
     public float cooldown;
     public float rotation;
     public float cost;
+
+    public static int BasicTowerDamage = 50;
+    public static int FastTowerDamage = 7;
+
+    public static int BasicTowerSpeed = 12;
+    public static int FastTowerSpeed = 20;
 
     //MOdel wierzy
     public GameObject model;
@@ -44,12 +51,20 @@ public class Tower : MonoBehaviour
         cooldown -= Time.deltaTime;
         if (cooldown < 0)
         {
+            //missle = gameObject.AddComponent<Missle>();
+            //missle.Initalize(
+            //   Instantiate(GameObject.FindGameObjectWithTag("BasicMissleTag"), model.transform.position, Quaternion.identity), // klon sfery,ktora ma byc pociskiem
+            //   model, // model wierzy
+            //   target, // ref. do agenta
+            //   missleType,(int)damage,12); // typ pocisku 
+            //cooldown = reload;
+
             missle = gameObject.AddComponent<Missle>();
             missle.Initalize(
                Instantiate(GameObject.FindGameObjectWithTag("BasicMissleTag"), model.transform.position, Quaternion.identity), // klon sfery,ktora ma byc pociskiem
                model, // model wierzy
                target, // ref. do agenta
-               missleType,(int)damage,12); // typ pocisku 
+               missleType); // typ pocisku 
             cooldown = reload;
         }
     }
@@ -101,6 +116,7 @@ public class Tower : MonoBehaviour
         {
             case TowerType.Basic:
                 type = TowerBuilder.ChosenTower.Basic;
+                missleType = Missle.MissleType.Basic;
                 damage = 50;
                 range = 3;
                 burstDamage = 0;
@@ -111,6 +127,7 @@ public class Tower : MonoBehaviour
             case TowerType.CannonTower:
                 damage = 100;
                 type = TowerBuilder.ChosenTower.CannonTower;
+                missleType = Missle.MissleType.Fast;
                 range = 5;
                 burstDamage = 20;
                 reload = 0.5f;
@@ -119,14 +136,63 @@ public class Tower : MonoBehaviour
 
             case TowerType.Fast:
                 type = TowerBuilder.ChosenTower.Fast;
-                damage = 30;
+                damage = 25;
                 range = 4;
                 burstDamage = 0;
-                reload = 1.8f;
+                reload = 3f;
                 cost = (int)type;
                 break;
 
             case TowerType.Sniper:
+                type = TowerBuilder.ChosenTower.Sniper;
+                damage = 40;
+                range = 10;
+                burstDamage = 5;
+                reload = 0.8f;
+                cost = (int) type;
+                break;
+        }
+    }
+
+
+    public void Initialize(GameObject model, Vector3 Position, TowerBuilder.ChosenTower towerType)
+    {
+        //  this.isPlaced = true;
+        this.model = model;
+        //  this.position = Position;
+        target = null;
+        switch (towerType)
+        {
+            case TowerBuilder.ChosenTower.Basic:
+                type = TowerBuilder.ChosenTower.Basic;
+                missleType = Missle.MissleType.Basic;
+                damage = 50;
+                range = 3;
+                burstDamage = 0;
+                reload = 1.2f;
+                cost = (int) type;
+                break;
+
+            case TowerBuilder.ChosenTower.CannonTower:
+                damage = 100;
+                type = TowerBuilder.ChosenTower.CannonTower;
+                missleType = Missle.MissleType.Fast;
+                range = 5;
+                burstDamage = 20;
+                reload = 0.5f;
+                cost = (int) type;
+                break;
+
+            case TowerBuilder.ChosenTower.Fast:
+                type = TowerBuilder.ChosenTower.Fast;
+                damage = 25;
+                range = 4;
+                burstDamage = 0;
+                reload = 0.5f;
+                cost = (int) type;
+                break;
+
+            case TowerBuilder.ChosenTower.Sniper:
                 type = TowerBuilder.ChosenTower.Sniper;
                 damage = 40;
                 range = 10;

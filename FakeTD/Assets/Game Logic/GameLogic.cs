@@ -69,7 +69,7 @@ public class GameLogic : MonoBehaviour
 
         TowerBuilder.terrainMatrix = terrain;
 
-        MoneyAndScores.money = 5000f;
+        MoneyAndScores.money = 50f;
         //agent = new Agent(GameObject.Find("Enemy"))
         initalised = true;
         wavesController = new WaveController(true);//todo ustawiać parametr z menu
