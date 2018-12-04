@@ -114,7 +114,7 @@ public class CameraController : MonoBehaviour
             //if (camt.position.z > 10)   //is inside terrain border?
             // camt.Translate(0, 0, -10 * Time.deltaTime);
 
-            if (Target.transform.position.z > -gene.rows)
+            if (Target.transform.position.z > -gene._maxZ -5)
                 Target.transform.Translate(0, 0, -10 * Time.deltaTime);
         }
         else if (dir == LEFT)
@@ -130,7 +130,7 @@ public class CameraController : MonoBehaviour
 
             //if (camt.position.x < tsize.x - 10) //is inside terrain border?
             //    camt.Translate(10 * Time.deltaTime, 0, 0);
-            if (Target.transform.position.x > gene.cols )
+            if (Target.transform.position.x > gene.cols ) // gene.cols
                 return;
             Target.transform.Translate(10 * Time.deltaTime, 0, 0);
         }

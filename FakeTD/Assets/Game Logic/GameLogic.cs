@@ -37,7 +37,7 @@ public class GameLogic : MonoBehaviour
     Vector2 startPoint;
     public List<Vector2> pathTiles;
 
-
+    public static Generator generator = null;
     public static List<Agent> agents = new List<Agent>();
     public static List<Tower> towers = new List<Tower>();
     const int maxNumberOfMobs = 8;
@@ -50,6 +50,7 @@ public class GameLogic : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        
         // towers = new List<Tower>();
 
         NumberOfMobs = 0;
@@ -57,18 +58,18 @@ public class GameLogic : MonoBehaviour
 
 
     // Wyczyścić to niezbędnego minimum 
-    public void Initalize(Terrain[,] terrain, Vector2 startPoint, Vector2 endPoint)
+    public void Initalize(Generator gene,Terrain[,] terrain, Vector2 startPoint, Vector2 endPoint)
     {
         Agent.waypoints = new List<Vector2>(pathTiles);
         Agent.waypoints.Add(startPoint);
         Agent.waypoints.Add(endPoint);
         Agent.waypoints.Reverse();
-
+        generator = gene;
         this.startPoint = endPoint;
 
         TowerBuilder.terrainMatrix = terrain;
 
-        MoneyAndScores.money = 50f;
+        MoneyAndScores.money = 5000f;
         //agent = new Agent(GameObject.Find("Enemy"))
         initalised = true;
         wavesController = new WaveController(true);//todo ustawiać parametr z menu
