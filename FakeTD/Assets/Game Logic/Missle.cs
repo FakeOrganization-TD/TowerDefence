@@ -5,6 +5,7 @@ public class Missle : MonoBehaviour
     public enum MissleType
     {
         Basic,
+        Fast
     }
 
     public GameObject MissleModel;
@@ -24,17 +25,50 @@ public class Missle : MonoBehaviour
         currentPosition = origin;
         this.damage = damage;
         this.speed = speed;
-        //switch (type)
-        //{
-        //    case MissleType.Basic:
-        //        damage = 15;
-        //       // MissleModel.transform.localScale
-        //        speed = 12f ; // szybkosc ataku: szybkosc agenta + offset 
-        //        break;
-        //}
+        switch (type)
+        {
+            case MissleType.Basic:
+                damage = Tower.BasicTowerDamage;
+                // MissleModel.transform.localScale
+                speed = Tower.BasicTowerSpeed; // szybkosc ataku: szybkosc agenta + offset 
+                break;
+            case MissleType.Fast:
+                damage = Tower.FastTowerDamage;
+                speed = Tower.FastTowerSpeed;
+                break;
+        }
 
-      
+
     }
+    public void Initalize(GameObject model, GameObject Mothertower, Agent Target, MissleType type)
+    {
+        this.TargetAgent = Target;
+        this.MissleModel = model;
+        this.Mothertower = Mothertower;
+        origin = Mothertower.transform.position;
+        currentPosition = origin;
+        switch (type)
+        {
+            case MissleType.Basic:
+                damage = Tower.BasicTowerDamage;
+                // MissleModel.transform.localScale
+                speed = Tower.BasicTowerSpeed; // szybkosc ataku: szybkosc agenta + offset 
+                break;
+            case MissleType.Fast:
+                damage = Tower.FastTowerDamage;
+                speed = Tower.FastTowerSpeed;
+                break;
+        }
+
+
+    }
+
+
+
+
+
+
+
     // Funkcja,ktora jest odpowiedzialna za trafienie i poruszanie sie pocisku funkcja troche tylko zmieniona z agenta ( Move()  )
     public void HitTarget()
     {

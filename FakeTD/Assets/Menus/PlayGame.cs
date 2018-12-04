@@ -38,7 +38,7 @@ public class PlayGame : MonoBehaviour
           
 
             
-            gameLogic.Initalize(terrainMatrix, mapStartPosition, mapEndPosition);
+            gameLogic.Initalize(gene,terrainMatrix, mapStartPosition, mapEndPosition);
             
 
         }

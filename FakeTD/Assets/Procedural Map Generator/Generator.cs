@@ -17,11 +17,11 @@ public class Generator : MonoBehaviour
 
     PerlinNoise noise;
   public  int _minX = 0;
-  public  int _maxX = 16;
-  public  int _minZ = 0;
-  public  int _maxZ = 16;
-  public  int _minY = 0;
-  public  int _maxY = 5;     //Max height of mountains15
+  public int _maxX = 16;
+  public int _minZ = 0;
+  public int _maxZ = 16;
+  public int _minY = 0;
+  public int _maxY = 5;     //Max height of mountains15
     public int rows;
     public int cols;
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1820,13 +1820,13 @@ MonoBehaviour:
   pathPrefab: {fileID: 133746, guid: ecf7e965687b7614f97bb69e8463566e, type: 2}
   obstaclePropabilityPercent: 0.25
   pathTilesList: []
-  TrimTheMap: 1
+  TrimTheMap: 0
   _minX: 0
-  _maxX: 30
+  _maxX: 10
   _minZ: 0
-  _maxZ: 30
+  _maxZ: 20
   _minY: 0
-  _maxY: 12
+  _maxY: 7
   rows: 0
   cols: 0
 --- !u!4 &1190643028
