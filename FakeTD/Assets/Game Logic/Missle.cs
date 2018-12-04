@@ -5,7 +5,9 @@ public class Missle : MonoBehaviour
     public enum MissleType
     {
         Basic,
-        Fast
+        Fast,
+        Cannon,
+        Sniper
     }
 
     public GameObject MissleModel;
@@ -16,30 +18,7 @@ public class Missle : MonoBehaviour
     Vector3 origin;
     Vector3 currentPosition;
     Vector3 destination;
-    public void Initalize(GameObject model,GameObject Mothertower,Agent Target, MissleType type,int damage,int speed)
-    {
-        this.TargetAgent = Target;
-        this.MissleModel = model;
-        this.Mothertower = Mothertower;
-        origin = Mothertower.transform.position;
-        currentPosition = origin;
-        this.damage = damage;
-        this.speed = speed;
-        switch (type)
-        {
-            case MissleType.Basic:
-                damage = Tower.BasicTowerDamage;
-                // MissleModel.transform.localScale
-                speed = Tower.BasicTowerSpeed; // szybkosc ataku: szybkosc agenta + offset 
-                break;
-            case MissleType.Fast:
-                damage = Tower.FastTowerDamage;
-                speed = Tower.FastTowerSpeed;
-                break;
-        }
 
-
-    }
     public void Initalize(GameObject model, GameObject Mothertower, Agent Target, MissleType type)
     {
         this.TargetAgent = Target;
@@ -57,6 +36,14 @@ public class Missle : MonoBehaviour
             case MissleType.Fast:
                 damage = Tower.FastTowerDamage;
                 speed = Tower.FastTowerSpeed;
+                break;
+            case MissleType.Cannon:
+                damage = Tower.CannonTowerDamage;
+                speed = Tower.CannonTowerSpeed;
+                break;
+            case MissleType.Sniper:
+                damage = Tower.SniperTowerDamage;
+                speed = Tower.SniperTowerSpeed;
                 break;
         }
 

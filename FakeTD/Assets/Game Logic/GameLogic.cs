@@ -144,7 +144,7 @@ public class GameLogic : MonoBehaviour
             Destroy(this);  
 
         }
-
+        
         // To do Score
 
         timeLeft -= Time.deltaTime;
@@ -167,19 +167,33 @@ public class GameLogic : MonoBehaviour
        // sypie nullami 
         if (timeLeft < 0 && wavesController.waves[wavesController.currentWave].Count > 0)
         {
-            GameObject enemy = GameObject.Find("FastMob");
+            GameObject FastMob = GameObject.Find("FastMob");
+            GameObject TankMob = GameObject.Find("TankMob");
+            GameObject SuperMob = GameObject.Find("SuperMob");
+            GameObject enemy;
+            var agtType = wavesController.waves[wavesController.currentWave][0];
 
-            
+            switch (agtType)
+            {
+                case Agent.AgentType.Fast: enemy = FastMob;
+                    break;
+                case Agent.AgentType.Normal: enemy = SuperMob;
+                    break;
+                case Agent.AgentType.Tank: enemy = TankMob;
+                    break;
+                default: enemy = FastMob;break;
+            }
+
 
             WaveTextManager.Message = "Wave " + (wavesController.currentWave + 1);
-            var Agent = gameObject.AddComponent<Agent>();
-            Agent.Initalize(
+            var agent = gameObject.AddComponent<Agent>();
+            agent.Initalize(
               Instantiate(enemy, new Vector3(startPoint.x, 1, startPoint.y),
               Quaternion.identity),
               startPoint,
               wavesController.waves[wavesController.currentWave][0]);
 
-            agents.Add(Agent);
+            agents.Add(agent);
             if (wavesController.waves[wavesController.currentWave].Count > 0)
                 wavesController.waves[wavesController.currentWave].RemoveAt(0);
 

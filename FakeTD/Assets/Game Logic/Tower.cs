@@ -18,7 +18,11 @@ public class Tower : MonoBehaviour
 
     public static int BasicTowerDamage = 50;
     public static int FastTowerDamage = 30;
+    public static int CannonTowerDamage = 100;
+    public static int SniperTowerDamage = 60;
 
+    public static int SniperTowerSpeed = 30;
+    public static int CannonTowerSpeed = 7;
     public static int BasicTowerSpeed = 12;
     public static int FastTowerSpeed = 20;
 
@@ -113,7 +117,7 @@ public class Tower : MonoBehaviour
             case TowerBuilder.ChosenTower.Basic:
                 type = TowerBuilder.ChosenTower.Basic;
                 missleType = Missle.MissleType.Basic;
-                damage = 50;
+                
                 range = 3;
                 burstDamage = 0;
                 reload = 1.2f;
@@ -121,19 +125,19 @@ public class Tower : MonoBehaviour
                 break;
 
             case TowerBuilder.ChosenTower.CannonTower:
-                damage = 100;
-                //type = TowerBuilder.ChosenTower.CannonTower;
-                //missleType = Missle.MissleType.Fast;
+            
+                type = TowerBuilder.ChosenTower.CannonTower;
+                missleType = Missle.MissleType.Cannon;
                 range = 5;
                 burstDamage = 20;
-                reload = 0.5f;
+                reload = 2f;
                 cost = (int) type;
                 break;
 
             case TowerBuilder.ChosenTower.Fast:
                 type = TowerBuilder.ChosenTower.Fast;
                 missleType = Missle.MissleType.Fast;
-                damage = 25;
+               
                 range = 4;
                 burstDamage = 0;
                 reload = 0.5f;
@@ -142,10 +146,11 @@ public class Tower : MonoBehaviour
 
             case TowerBuilder.ChosenTower.Sniper:
                 type = TowerBuilder.ChosenTower.Sniper;
-                damage = 40;
+                missleType = Missle.MissleType.Sniper;
+          
                 range = 10;
                 burstDamage = 5;
-                reload = 0.8f;
+                reload = 1.5f;
                 cost = (int) type;
                 break;
         }

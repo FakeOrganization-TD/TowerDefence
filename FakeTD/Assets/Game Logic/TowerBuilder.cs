@@ -10,7 +10,7 @@ public  class TowerBuilder : MonoBehaviour
     public  enum ChosenTower
     {
         Basic=15,
-        CannonTower=10,
+        CannonTower=40,
         Sniper= 30,
         Fast= 20,
         None
@@ -57,6 +57,7 @@ public  class TowerBuilder : MonoBehaviour
                 break;
 
             case ChosenTower.CannonTower:
+                towerTag = "CannonTowerTag";
                 break;
 
             case ChosenTower.Fast:
@@ -64,6 +65,7 @@ public  class TowerBuilder : MonoBehaviour
                 break;
 
             case ChosenTower.Sniper:
+                towerTag = "SniperTowerTag";
                 break;
 
             case ChosenTower.None:
