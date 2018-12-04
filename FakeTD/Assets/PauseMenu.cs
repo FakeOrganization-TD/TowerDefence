@@ -42,11 +42,7 @@ public class PauseMenu : MonoBehaviour {
         GameIsPaused = true;
     }
 
-    public void LoadMenu()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("Menu 3D");
-    }
+
 
     public void QuitGame()
     {

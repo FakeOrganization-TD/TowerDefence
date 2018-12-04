@@ -139,7 +139,7 @@ public class GameLogic : MonoBehaviour
         
         if(MoneyAndScores.hpNexus<=0)
         {
-            TextManager.cashErrorMessage = " Przegrales gre";
+            TextManager.cashErrorMessage = "You Lose :( Your planet is destroyed";
             wavesController.wavesCount = 0;
             Destroy(this);  
 
