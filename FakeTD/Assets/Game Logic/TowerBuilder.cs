@@ -28,7 +28,7 @@ public  class TowerBuilder : MonoBehaviour
     static GameObject chosenTowerModel ;
     public GameObject MainCamera;
     public static Terrain[,] terrainMatrix;
-    string towerTag = "";
+   static string towerTag = "";
     // ChosenTower chosenTower;
 
     //public TowerBuilder(GameObject basic, GameObject cannonTower, GameObject sniper, GameObject fast, ChosenTower chosenTower)
@@ -46,13 +46,13 @@ public  class TowerBuilder : MonoBehaviour
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         TowerChoser.isSelected = true;
         TowerChoser.ChosenTower=(ChosenTower)Enum.Parse(typeof(ChosenTower), strChosenTower, true);
-        
+    
         
         switch (TowerChoser.ChosenTower)
         {
             case ChosenTower.Basic:
                 Debug.Log("IT CANONS !");
-                towerTag="BasicTowerTag";
+                towerTag = "BasicTowerTag";
 
                 break;
 
