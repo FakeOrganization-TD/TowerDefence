@@ -14,6 +14,11 @@ TagManager:
   - CashInfoTag
   - CashErrorTag
   - HealthPointsTag
+  - BasicTowerButtonTagFast
+  - FastTowerTag
+  - TankMobTag
+  - CannonTowerTag
+  - SniperTowerTag
   layers:
   - Default
   - TransparentFX
