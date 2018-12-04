@@ -3,13 +3,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    public enum TowerType
-    {
-        Basic,
-        CannonTower,
-        Sniper,
-        Fast
-    }
+
 
     TowerBuilder.ChosenTower type;
     // public bool isPlaced=false;
@@ -23,7 +17,7 @@ public class Tower : MonoBehaviour
     public float cost;
 
     public static int BasicTowerDamage = 50;
-    public static int FastTowerDamage = 7;
+    public static int FastTowerDamage = 30;
 
     public static int BasicTowerSpeed = 12;
     public static int FastTowerSpeed = 20;
@@ -106,54 +100,7 @@ public class Tower : MonoBehaviour
 
    
 
-    public void Initialize(GameObject model, Vector3 Position, TowerType towerType)
-    {
-        //  this.isPlaced = true;
-        this.model = model;
-        //  this.position = Position;
-        target = null;
-        switch (towerType)
-        {
-            case TowerType.Basic:
-                type = TowerBuilder.ChosenTower.Basic;
-                missleType = Missle.MissleType.Basic;
-                damage = 50;
-                range = 3;
-                burstDamage = 0;
-                reload = 1.2f;
-                cost = (int) type;
-                break;
-
-            case TowerType.CannonTower:
-                damage = 100;
-                type = TowerBuilder.ChosenTower.CannonTower;
-                missleType = Missle.MissleType.Fast;
-                range = 5;
-                burstDamage = 20;
-                reload = 0.5f;
-                cost = (int) type;
-                break;
-
-            case TowerType.Fast:
-                type = TowerBuilder.ChosenTower.Fast;
-                damage = 25;
-                range = 4;
-                burstDamage = 0;
-                reload = 3f;
-                cost = (int)type;
-                break;
-
-            case TowerType.Sniper:
-                type = TowerBuilder.ChosenTower.Sniper;
-                damage = 40;
-                range = 10;
-                burstDamage = 5;
-                reload = 0.8f;
-                cost = (int) type;
-                break;
-        }
-    }
-
+    
 
     public void Initialize(GameObject model, Vector3 Position, TowerBuilder.ChosenTower towerType)
     {
@@ -175,8 +122,8 @@ public class Tower : MonoBehaviour
 
             case TowerBuilder.ChosenTower.CannonTower:
                 damage = 100;
-                type = TowerBuilder.ChosenTower.CannonTower;
-                missleType = Missle.MissleType.Fast;
+                //type = TowerBuilder.ChosenTower.CannonTower;
+                //missleType = Missle.MissleType.Fast;
                 range = 5;
                 burstDamage = 20;
                 reload = 0.5f;
@@ -185,6 +132,7 @@ public class Tower : MonoBehaviour
 
             case TowerBuilder.ChosenTower.Fast:
                 type = TowerBuilder.ChosenTower.Fast;
+                missleType = Missle.MissleType.Fast;
                 damage = 25;
                 range = 4;
                 burstDamage = 0;
