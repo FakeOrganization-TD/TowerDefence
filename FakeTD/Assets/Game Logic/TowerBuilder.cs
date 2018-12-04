@@ -57,15 +57,15 @@ public  class TowerBuilder : MonoBehaviour
                 break;
 
             case ChosenTower.CannonTower:
-                towerTag = "CannonTowerTag";
+                towerTag = "SniperTowerTag";
                 break;
-
+                
             case ChosenTower.Fast:
                 towerTag = "FastTowerTag";
                 break;
 
             case ChosenTower.Sniper:
-                towerTag = "SniperTowerTag";
+                towerTag = "CannonTowerTag";
                 break;
 
             case ChosenTower.None:
